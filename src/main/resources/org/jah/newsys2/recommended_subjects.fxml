@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.jah.newsys2.RecommendedSubjectsController">
+
+    <top>
+        <VBox spacing="15.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="15.0" left="20.0" />
+            </padding>
+            <children>
+                <Label text="Recommended Subjects" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="22.0" />
+                    </font>
+                </Label>
+
+                <HBox spacing="15.0">
+                    <children>
+                        <Label text="Student:" />
+                        <Label fx:id="nameLabel" text="Student Name">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <HBox spacing="15.0">
+                    <children>
+                        <Label text="ID Number:" />
+                        <Label fx:id="idLabel" text="ID Number">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <HBox spacing="15.0">
+                    <children>
+                        <Label text="Program:" />
+                        <Label fx:id="programLabel" text="Program">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="subjectsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="codeColumn" prefWidth="150.0" text="Subject Code" />
+                <TableColumn fx:id="titleColumn" prefWidth="300.0" text="Subject Title" />
+                <TableColumn fx:id="unitsColumn" prefWidth="100.0" text="Units" />
+            </columns>
+            <BorderPane.margin>
+                <Insets top="15.0" right="20.0" bottom="15.0" left="20.0" />
+            </BorderPane.margin>
+            <placeholder>
+                <Label text="No recommended subjects available" />
+            </placeholder>
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="15.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="15.0" right="20.0" bottom="20.0" left="20.0" />
+            </padding>
+            <children>
+                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                    <children>
+                        <Label text="Total Units:">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="totalUnitsLabel" text="0">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                    <children>
+                        <Button fx:id="printButton" mnemonicParsing="false" onAction="#handlePrint" text="Print">
+                            <padding>
+                                <Insets top="5.0" right="15.0" bottom="5.0" left="15.0" />
+                            </padding>
+                        </Button>
+                        <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleClose" text="Close">
+                            <padding>
+                                <Insets top="5.0" right="15.0" bottom="5.0" left="15.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jah.newsys2.SubjectSelectionController">
+    <children>
+        <!-- Header -->
+        <StackPane layoutX="0.0" layoutY="0.0" prefHeight="80.0" style="-fx-background-color: #3498db;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label text="Recent Subjects Taken" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                    <effect>
+                        <DropShadow color="#00000055" height="3.0" radius="1.0" width="3.0" />
+                    </effect>
+                </Label>
+            </children>
+        </StackPane>
+
+        <!-- Instructions -->
+        <Label layoutX="50.0" layoutY="90.0" text="Please select the subjects you've recently taken and indicate whether you passed or failed each one." textFill="#555555" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="90.0">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+
+        <!-- Subjects Scroll Container -->
+        <ScrollPane fitToWidth="true" layoutX="50.0" layoutY="120.0" prefHeight="300.0" prefWidth="600.0" style="-fx-background: #f5f5f5; -fx-border-color: #cccccc; -fx-border-radius: 5;" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="120.0">
+            <content>
+                <VBox fx:id="subjectsContainer" spacing="15" style="-fx-background-color: white; -fx-padding: 15;">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                </VBox>
+            </content>
+            <effect>
+                <DropShadow color="#00000022" height="6.0" radius="2.5" width="6.0" />
+            </effect>
+        </ScrollPane>
+
+        <!-- Button Container -->
+        <HBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+            <children>
+                <Button mnemonicParsing="false" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 5;" text="Back">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="submitButton" mnemonicParsing="false" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5;" text="Submit">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                    </padding>
+                    <effect>
+                        <DropShadow color="#00000033" height="5.0" radius="2.0" width="5.0" />
+                    </effect>
+                </Button>
+            </children>
+        </HBox>
+
+        <!-- Status indicator -->
+        <Label layoutX="50.0" layoutY="430.0" text="* All fields are required" textFill="#e74c3c" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="50.0">
+            <font>
+                <Font size="12.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
