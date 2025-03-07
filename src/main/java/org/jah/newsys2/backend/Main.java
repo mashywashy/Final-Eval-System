@@ -8,18 +8,16 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         int totalUnits = 0;
-        StudentEval se = new StudentEval("src/curr2.xml");
+        StudentEval se = new StudentEval("bsit");
         Map<String, Boolean> subMap = new HashMap<>();
 
-        // Adding 2nd year 2nd sem subjects with random status
-        subMap.put("sts101", false);
-        subMap.put("philo101", false);
-        subMap.put("cc-quameth22", false);
-        subMap.put("it-platech22", true);
-        subMap.put("cc-appsdev22", true);
-        subMap.put("cc-datastruc22", true);
-        subMap.put("cc-datacom22", true);
-        subMap.put("pe104", true);
+        subMap.put("it-imdbsys31", true);
+        subMap.put("it-network31", true);
+        subMap.put("it-testqua31", true);
+        subMap.put("cc-hci31", true);
+        subMap.put("cc-rescom31", true);
+        subMap.put("it-el", true);
+        subMap.put("it-fre", true);
 
         List<Subject> subs = se.getRecommendedSubjects(subMap);
         for(Subject sub : subs) {
