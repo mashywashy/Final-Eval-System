@@ -33,6 +33,9 @@ public class SubjectSelectionController {
     @FXML
     private Button submitButton;
 
+    @FXML
+    private Button backButton;
+
     private List<SubjectEntry> subjectEntries = new ArrayList<>();
     private String program;
     private String studentName;
@@ -59,6 +62,7 @@ public class SubjectSelectionController {
     @FXML
     public void initialize() {
         submitButton.setOnAction(this::handleSubmit);
+        backButton.setOnAction(this::handleBack);
     }
 
     public void setupSubjects(int count, String program, String studentName, String studentId) {
@@ -137,6 +141,31 @@ public class SubjectSelectionController {
 
         // Pass data to RecommendedSubjectsController
         openRecommendedSubjectsWindow(recommendedSubjects);
+    }
+
+    private void handleBack(ActionEvent event) {
+        try {
+            // Load the main screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main_screen.fxml"));
+            Parent root = loader.load();
+
+            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+
+            // Create new scene with the main screen
+            Scene scene = new Scene(root);
+
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setX(screenBounds.getMinX());
+            stage.setY(screenBounds.getMinY());
+            stage.setWidth(screenBounds.getWidth());
+            stage.setHeight(screenBounds.getHeight());
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Navigation Error", "Could not return to main screen.");
+        }
     }
 
     private void openRecommendedSubjectsWindow(List<Subject> recommendedSubjects) {

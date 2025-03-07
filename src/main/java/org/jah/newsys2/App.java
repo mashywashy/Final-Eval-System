@@ -13,6 +13,7 @@ public class App extends javafx.application.Application {
         Scene scene = new Scene(fxmlLoader.load(), 640, 400);
         stage.setTitle("Datastruct Project");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

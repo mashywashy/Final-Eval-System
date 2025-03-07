@@ -86,6 +86,11 @@ public class AppController {
                 return;
             }
 
+            if(Integer.parseInt(subjectsField.getText()) > 15) {
+                showAlert("Error", "Please enter no more than 15");
+                return;
+            }
+
             int subjectCount = Integer.parseInt(subjectsField.getText());
             if (subjectCount <= 0) {
                 showAlert("Error", "Number of subjects must be greater than zero.");
@@ -115,6 +120,7 @@ public class AppController {
             Stage stage = new Stage();
             stage.setTitle("Subject Selection");
             stage.setScene(new Scene(root, 600, 400));
+            stage.setMaximized(true);
             stage.show();
 
             // Close the current window
@@ -139,6 +145,7 @@ public class AppController {
             Stage stage = new Stage();
             stage.setTitle("Recommended Subjects");
             stage.setScene(new Scene(root, 600, 400));
+            stage.setMaximized(true);
             stage.show();
 
 

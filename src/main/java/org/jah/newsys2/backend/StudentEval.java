@@ -42,8 +42,7 @@ public class StudentEval {
                 .collect(Collectors.toList());
     }
 
-    // For continuing students
-    // Updated getRecommendedSubjects method with same-semester subject handling for underload
+    // For continuing students - FIXED version
     public List<Subject> getRecommendedSubjects(Map<String, Boolean> recentSubjects) {
         List<Subject> recommendations = new ArrayList<>();
         int totalUnits = 0;
@@ -66,30 +65,63 @@ public class StudentEval {
         // Create a set of all subjects the student has taken (passed or failed)
         Set<String> takenSubjects = new HashSet<>(recentSubjects.keySet());
 
-        // Find subjects that directly follow the ones the student has passed
-        List<Subject> nextSubjects = findNextSubjects(passedSubjects);
+        // Determine the student's current academic standing (year and semester)
+        Pair<String, String> nextSemester = determineNextSemester(passedSubjects);
+        String nextYear = nextSemester.getFirst();
+        String nextSem = nextSemester.getSecond();
 
-        // Sort by year and semester to maintain proper curriculum sequence
-        nextSubjects.sort(Comparator
-                .comparing(Subject::getYear)
-                .thenComparing(Subject::getSemester));
+        // Get ALL subjects from the next semester that the student hasn't taken yet
+        List<Subject> nextSemesterSubjects = allSubjects.stream()
+                .filter(subject -> nextYear.equals(subject.getYear()) && nextSem.equals(subject.getSemester()))
+                .filter(subject -> !takenSubjects.contains(subject.getCode()))
+                .filter(subject -> hasPassedAllPrerequisites(subject, recentSubjects))
+                .collect(Collectors.toList());
 
-        // Add next appropriate subjects up to the unit limit
-        for (Subject subject : nextSubjects) {
-            // Skip if already recommended or already taken
-            if (recommendations.contains(subject) || takenSubjects.contains(subject.getCode())) {
+        // Sort by subject code to maintain organization
+        nextSemesterSubjects.sort(Comparator.comparing(Subject::getCode));
+
+        // Add next semester subjects up to the unit limit
+        for (Subject subject : nextSemesterSubjects) {
+            // Skip if already recommended
+            if (recommendations.contains(subject)) {
                 continue;
             }
 
-            // Check if prerequisites are met and unit limit is not exceeded
-            if (hasPassedAllPrerequisites(subject, recentSubjects) &&
-                    totalUnits + subject.getUnits() <= MAX_UNITS) {
+            // Check if unit limit is not exceeded
+            if (totalUnits + subject.getUnits() <= MAX_UNITS) {
                 recommendations.add(subject);
                 totalUnits += subject.getUnits();
             }
         }
 
-        // If we're still below the minimum units, add electives and free electives
+        // If we're still below the minimum units, look for additional subjects from the same year but different semester
+        if (totalUnits < MIN_UNITS) {
+            String otherSem = nextSem.equals("1") ? "2" : "1";
+
+            List<Subject> sameYearOtherSemSubjects = allSubjects.stream()
+                    .filter(subject -> nextYear.equals(subject.getYear()) && otherSem.equals(subject.getSemester()))
+                    .filter(subject -> !takenSubjects.contains(subject.getCode()))
+                    .filter(subject -> !recommendations.contains(subject))
+                    .filter(subject -> hasPassedAllPrerequisites(subject, recentSubjects))
+                    .collect(Collectors.toList());
+
+            // Sort them to prioritize core subjects
+            sameYearOtherSemSubjects.sort(Comparator.comparing(Subject::getCode));
+
+            // Add subjects until minimum units or no more subjects available
+            for (Subject subject : sameYearOtherSemSubjects) {
+                if (totalUnits + subject.getUnits() <= MAX_UNITS) {
+                    recommendations.add(subject);
+                    totalUnits += subject.getUnits();
+
+                    if (totalUnits >= MIN_UNITS) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // If still underloaded, add electives
         if (totalUnits < MIN_UNITS) {
             List<Subject> electiveSubjects = findAvailableElectives(takenSubjects);
             electiveSubjects.sort(Comparator
@@ -113,88 +145,80 @@ public class StudentEval {
             }
         }
 
-        // If still underloaded, try to add more subjects from the same semester
-        if (totalUnits < MIN_UNITS) {
-            // Determine the most common semester in our current recommendations
-            Map<String, Integer> semesterCounts = new HashMap<>();
-            Map<String, String> subjectYearSem = new HashMap<>();
+        return recommendations;
+    }
 
-            for (Subject subject : recommendations) {
-                String yearSem = subject.getYear() + "-" + subject.getSemester();
-                semesterCounts.put(yearSem, semesterCounts.getOrDefault(yearSem, 0) + 1);
-                subjectYearSem.put(subject.getCode(), yearSem);
-            }
+    // NEW: Determine the next semester the student should take
+    private Pair<String, String> determineNextSemester(Set<String> passedSubjects) {
+        // Map to count subjects passed in each year and semester
+        Map<String, Map<String, Integer>> yearSemCounts = new HashMap<>();
 
-            // Find the most common semester
-            String mostCommonSemester = semesterCounts.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse("");
+        // Count passed subjects by year and semester
+        for (String code : passedSubjects) {
+            Subject subject = findSubjectByCode(code);
+            if (subject == null) continue;
 
-            if (!mostCommonSemester.isEmpty()) {
-                String[] parts = mostCommonSemester.split("-");
-                String targetYear = parts[0];
-                String targetSem = parts[1];
+            String year = subject.getYear();
+            String sem = subject.getSemester();
 
-                // Find additional subjects from the same semester
-                List<Subject> sameSemesterSubjects = allSubjects.stream()
-                        .filter(subject -> targetYear.equals(subject.getYear()) &&
-                                targetSem.equals(subject.getSemester()))
-                        .filter(subject -> !recommendations.contains(subject) &&
-                                !takenSubjects.contains(subject.getCode()))
-                        .filter(subject -> hasPassedAllPrerequisites(subject, recentSubjects))
-                        .collect(Collectors.toList());
+            yearSemCounts.putIfAbsent(year, new HashMap<>());
+            Map<String, Integer> semCounts = yearSemCounts.get(year);
+            semCounts.put(sem, semCounts.getOrDefault(sem, 0) + 1);
+        }
 
-                // Sort them to prioritize core subjects
-                sameSemesterSubjects.sort((s1, s2) -> {
-                    // Prioritize non-elective courses
-                    boolean s1Elective = s1.getCode().equals("it-el") || s1.getCode().equals("it-fre");
-                    boolean s2Elective = s2.getCode().equals("it-el") || s2.getCode().equals("it-fre");
+        // Calculate the total subjects in each semester in the curriculum
+        Map<String, Map<String, Integer>> totalSubjectsBySemester = new HashMap<>();
+        for (Subject subject : allSubjects) {
+            String year = subject.getYear();
+            String sem = subject.getSemester();
 
-                    if (s1Elective && !s2Elective) return 1;
-                    if (!s1Elective && s2Elective) return -1;
+            totalSubjectsBySemester.putIfAbsent(year, new HashMap<>());
+            Map<String, Integer> semCounts = totalSubjectsBySemester.get(year);
+            semCounts.put(sem, semCounts.getOrDefault(sem, 0) + 1);
+        }
 
-                    // If both are same type, sort by code
-                    return s1.getCode().compareTo(s2.getCode());
-                });
+        // Find the latest year and semester where student completed most subjects
+        String currentYear = "1";
+        String currentSem = "1";
 
-                // Add subjects until minimum units or no more subjects available
-                for (Subject subject : sameSemesterSubjects) {
-                    if (totalUnits + subject.getUnits() <= MAX_UNITS) {
-                        recommendations.add(subject);
-                        totalUnits += subject.getUnits();
+        for (String year : new String[]{"1", "2", "3", "4"}) {
+            if (!yearSemCounts.containsKey(year)) continue;
 
-                        if (totalUnits >= MIN_UNITS) {
-                            break;
-                        }
-                    }
+            for (String sem : new String[]{"1", "2"}) {
+                int passedCount = yearSemCounts.getOrDefault(year, Collections.emptyMap())
+                        .getOrDefault(sem, 0);
+                int totalCount = totalSubjectsBySemester.getOrDefault(year, Collections.emptyMap())
+                        .getOrDefault(sem, 0);
+
+                // If student has passed at least 60% of the subjects in this semester,
+                // consider this as their current semester
+                if (passedCount > 0 && totalCount > 0 &&
+                        ((double) passedCount / totalCount) >= 0.6) {
+                    currentYear = year;
+                    currentSem = sem;
                 }
             }
         }
 
-        return recommendations;
-    }
+        // Determine next semester
+        String nextYear = currentYear;
+        String nextSem = currentSem;
 
-    // Find subjects that directly follow passed subjects in the curriculum
-    private List<Subject> findNextSubjects(Set<String> passedSubjects) {
-        List<Subject> nextSubjects = new ArrayList<>();
+        if (currentSem.equals("1")) {
+            nextSem = "2";  // Move to second semester of the same year
+        } else {
+            // Move to first semester of the next year
+            nextSem = "1";
+            nextYear = String.valueOf(Integer.parseInt(currentYear) + 1);
 
-        for (Subject subject : allSubjects) {
-            // Skip subjects already passed
-            if (passedSubjects.contains(subject.getCode())) {
-                continue;
-            }
-
-            // Check if this subject has any prerequisites that are in the passed subjects list
-            boolean isDirectFollow = !subject.getPrerequisites().isEmpty() &&
-                    subject.getPrerequisites().stream().anyMatch(passedSubjects::contains);
-
-            if (isDirectFollow) {
-                nextSubjects.add(subject);
+            // Don't go beyond 4th year
+            if (Integer.parseInt(nextYear) > 4) {
+                nextYear = "4";
+                nextSem = "2";
             }
         }
 
-        return nextSubjects;
+        return new Pair<>(nextYear, nextSem);
     }
 
     // Find available electives based on student's year level
@@ -340,5 +364,24 @@ public class StudentEval {
                 .filter(subject -> subject.getCode().equals(code))
                 .findFirst()
                 .orElse(null);
+    }
+
+    // Simple Pair class for returning year and semester together
+    private static class Pair<F, S> {
+        private final F first;
+        private final S second;
+
+        public Pair(F first, S second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public F getFirst() {
+            return first;
+        }
+
+        public S getSecond() {
+            return second;
+        }
     }
 }
