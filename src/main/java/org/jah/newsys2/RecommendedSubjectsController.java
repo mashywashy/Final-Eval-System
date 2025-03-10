@@ -63,10 +63,10 @@ public class RecommendedSubjectsController {
      * @param program Student program
      * @param recommendedSubjects List of recommended subjects
      */
-    public void setupRecommendedSubjects(String name, String id, String program, List<org.jah.newsys2.backend.Subject> recommendedSubjects) {
+    public void setupRecommendedSubjects(String name, int id, String program, List<org.jah.newsys2.backend.Subject> recommendedSubjects) {
         // Set student information
         nameLabel.setText(name);
-        idLabel.setText(id);
+        idLabel.setText(String.valueOf(id));
         programLabel.setText(program);
 
         // Add subjects to the table

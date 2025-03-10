@@ -147,9 +147,9 @@
                     <prerequisite>cc-quameth22</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-el" units="3" />
-            <subject subjectCode="it-fre" units="3" />
-            <subject subjectCode="it-fre" units="3" />
+            <subject subjectCode="it-el1" units="3" />
+            <subject subjectCode="it-fre1" units="3" />
+            <subject subjectCode="it-fre2" units="3" />
         </firstSem>
         <secondSem>
             <subject subjectCode="it-imdbsys32" units="3">
@@ -184,20 +184,20 @@
                     <prerequisite>it-network31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-el" units="3" />
-            <subject subjectCode="it-fre" units="3" />
+            <subject subjectCode="it-el2" units="3" />
+            <subject subjectCode="it-fre3" units="3" />
         </secondSem>
     </thirdYear>
     <fourthYear>
         <firstSem>
             <subject subjectCode="lit11" units="3" />
             <subject subjectCode="it-cpstone40" units="3" />
-            <subject subjectCode="it-el" units="3" />
-            <subject subjectCode="it-fre" units="3" />
+            <subject subjectCode="it-el3" units="3" />
+            <subject subjectCode="it-fre4" units="3" />
         </firstSem>
         <secondSem>
             <subject subjectCode="cc-pract40" units="9" />
-            <subject subjectCode="it-el" units="3" />
+            <subject subjectCode="it-el4" units="3" />
         </secondSem>
     </fourthYear>
 </curriculum>

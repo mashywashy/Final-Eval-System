@@ -18,31 +18,23 @@ import java.util.List;
 
 public class AppController {
 
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField idNumberField;
-
-    @FXML
-    private ComboBox<String> newStudentComboBox;
-
-    @FXML
-    private ComboBox<String> programComboBox;
-
-    @FXML
-    private TextField subjectsField;
-
-    @FXML
-    private Button nextButton;
-    @FXML
-    private Button cancelButton;
+    @FXML private TextField nameField;
+    @FXML private TextField idNumberField;
+    @FXML private ComboBox<String> newStudentComboBox;
+    @FXML private ComboBox<String> programComboBox;
+    @FXML private ComboBox<String> yearLevelComboBox;
+    @FXML private ComboBox<String> semesterComboBox;
+    @FXML private TextField subjectsField;
+    @FXML private Button nextButton;
+    @FXML private Button cancelButton;
 
     @FXML
     public void initialize() {
         // Initialize ComboBoxes
         newStudentComboBox.getItems().addAll("Yes", "No");
         programComboBox.getItems().addAll("BSIT", "BSA", "BSN", "BSMT");
+        yearLevelComboBox.getItems().addAll("1", "2", "3", "4");
+        semesterComboBox.getItems().addAll("1", "2");
 
         // Add listener to newStudentComboBox to enable/disable subjectsField
         newStudentComboBox.setOnAction(event -> handleNewStudentSelection());
@@ -53,12 +45,14 @@ public class AppController {
     }
 
     private void handleNewStudentSelection() {
-        String selection = newStudentComboBox.getValue();
-        if ("No".equals(selection)) {
-            subjectsField.setDisable(false);
-        } else {
-            subjectsField.setDisable(true);
+        boolean isNewStudent = "Yes".equals(newStudentComboBox.getValue());
+        subjectsField.setDisable(isNewStudent);
+        yearLevelComboBox.setDisable(isNewStudent);
+        semesterComboBox.setDisable(isNewStudent);
+        if (isNewStudent) {
             subjectsField.clear();
+            yearLevelComboBox.setValue(null);
+            semesterComboBox.setValue(null);
         }
     }
 
@@ -67,11 +61,33 @@ public class AppController {
         String id = idNumberField.getText();
         String isNewStudent = newStudentComboBox.getValue();
         String program = programComboBox.getValue();
+        String yearLevel = yearLevelComboBox.getValue();
+        String semester = semesterComboBox.getValue();
 
         // Validate input fields
         if (name.isEmpty() || id.isEmpty() || isNewStudent == null || program == null) {
             showAlert("Error", "Please complete all required fields.");
             return;
+        }
+
+        // Validate that ID is numeric
+        if (!isNumeric(id)) {
+            showAlert("Error", "ID Number must contain only digits.");
+            return;
+        }
+
+
+        if ("No".equals(isNewStudent)) {
+            if (subjectsField.getText().isEmpty() || !isNumeric(subjectsField.getText())) {
+                showAlert("Error", "Please enter a valid number of subjects taken.");
+                return;
+            }
+
+            int subjectCount = Integer.parseInt(subjectsField.getText());
+            if (subjectCount <= 0 || subjectCount > 8) {
+                showAlert("Error", "You can take between 1 and 8 subjects only.");
+                return;
+            }
         }
 
         if ("Yes".equals(isNewStudent)) {
@@ -98,11 +114,11 @@ public class AppController {
             }
 
             // Open the subject selection screen
-            openSubjectSelectionScreen(subjectCount, program, name, id);
+            openSubjectSelectionScreen(subjectCount, program, name, id, yearLevel, semester);
         }
     }
 
-    private void openSubjectSelectionScreen(int subjectCount, String program, String name, String id) {
+    private void openSubjectSelectionScreen(int subjectCount, String program, String name, String id, String year, String semester) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("subject_input.fxml"));
             Parent root = loader.load();
@@ -111,7 +127,7 @@ public class AppController {
 
 
             if (controller instanceof SubjectSelectionController) {
-                ((SubjectSelectionController) controller).setupSubjects(subjectCount, program, name, id);
+                ((SubjectSelectionController) controller).setupSubjects(subjectCount, program, name, Integer.parseInt(id), Integer.parseInt(year), Integer.parseInt(semester));
             } else {
                 showAlert("Error", "Unexpected controller: " + controller.getClass().getName());
                 return;
@@ -140,7 +156,7 @@ public class AppController {
             Parent root = loader.load();
 
             RecommendedSubjectsController controller = loader.getController();
-            controller.setupRecommendedSubjects(name, id, programComboBox.getValue(), recommendedSubjects);
+            controller.setupRecommendedSubjects(name, Integer.parseInt(id), programComboBox.getValue(), recommendedSubjects);
 
             Stage stage = new Stage();
             stage.setTitle("Recommended Subjects");

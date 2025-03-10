@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<curriculum>
+    <firstYear>
+        <firstSem>
+            <subject subjectCode="bio101" units="3"/>
+            <subject subjectCode="chem101" units="3"/>
+            <subject subjectCode="eng100" units="3"/>
+            <subject subjectCode="math100" units="3"/>
+            <subject subjectCode="psych101" units="3"/>
+            <subject subjectCode="socio100" units="3"/>
+            <subject subjectCode="medtech-orient101" units="3"/>
+            <subject subjectCode="pe101" units="2"/>
+            <subject subjectCode="nstp101" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="bio102" units="3">
+                <prerequisite>bio101</prerequisite>
+            </subject>
+            <subject subjectCode="chem102" units="3">
+                <prerequisite>chem101</prerequisite>
+            </subject>
+            <subject subjectCode="eng101" units="3">
+                <prerequisite>eng100</prerequisite>
+            </subject>
+            <subject subjectCode="anatomy101" units="3"/>
+            <subject subjectCode="physiology101" units="3"/>
+            <subject subjectCode="histology101" units="3"/>
+            <subject subjectCode="pe102" units="2">
+                <prerequisite>pe101</prerequisite>
+            </subject>
+            <subject subjectCode="nstp102" units="3">
+                <prerequisite>nstp101</prerequisite>
+            </subject>
+        </secondSem>
+    </firstYear>
+    <secondYear>
+        <firstSem>
+            <subject subjectCode="microbio101" units="3"/>
+            <subject subjectCode="parasitology101" units="3"/>
+            <subject subjectCode="biochem101" units="3">
+                <prerequisite>chem102</prerequisite>
+            </subject>
+            <subject subjectCode="phlebotomy101" units="3"/>
+            <subject subjectCode="pathology101" units="3"/>
+            <subject subjectCode="pe103" units="2">
+                <prerequisite>pe102</prerequisite>
+            </subject>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="hematology101" units="3"/>
+            <subject subjectCode="clinical-chem101" units="3">
+                <prerequisite>biochem101</prerequisite>
+            </subject>
+            <subject subjectCode="immunology101" units="3"/>
+            <subject subjectCode="parasitology102" units="3">
+                <prerequisite>parasitology101</prerequisite>
+            </subject>
+            <subject subjectCode="toxicology101" units="3"/>
+            <subject subjectCode="pe104" units="2">
+                <prerequisite>pe103</prerequisite>
+            </subject>
+        </secondSem>
+    </secondYear>
+    <thirdYear>
+        <firstSem>
+            <subject subjectCode="hematology102" units="3">
+                <prerequisite>hematology101</prerequisite>
+            </subject>
+            <subject subjectCode="clinical-microbio101" units="3">
+                <prerequisite>microbio101</prerequisite>
+            </subject>
+            <subject subjectCode="clinical-parasitology101" units="3">
+                <prerequisite>parasitology102</prerequisite>
+            </subject>
+            <subject subjectCode="serology101" units="3"/>
+            <subject subjectCode="mycology101" units="3"/>
+            <subject subjectCode="molecular-bio101" units="3"/>
+            <subject subjectCode="elective1" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="clinical-chem102" units="3">
+                <prerequisite>clinical-chem101</prerequisite>
+            </subject>
+            <subject subjectCode="immunohematology101" units="3"/>
+            <subject subjectCode="virology101" units="3"/>
+            <subject subjectCode="cytogenetics101" units="3"/>
+            <subject subjectCode="research101" units="3"/>
+            <subject subjectCode="elective2" units="3"/>
+        </secondSem>
+    </thirdYear>
+    <fourthYear>
+        <firstSem>
+            <subject subjectCode="research102" units="3">
+                <prerequisite>research101</prerequisite>
+            </subject>
+            <subject subjectCode="lab-management101" units="3"/>
+            <subject subjectCode="medtech-laws101" units="3"/>
+            <subject subjectCode="ethics101" units="3"/>
+            <subject subjectCode="capstone101" units="3"/>
+            <subject subjectCode="elective3" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="clinical-practicum" units="12"/>
+        </secondSem>
+    </fourthYear>
+</curriculum>

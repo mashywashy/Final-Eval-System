@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<curriculum>
+    <firstYear>
+        <firstSem>
+            <subject subjectCode="acctg101" units="3"/>
+            <subject subjectCode="eng100" units="3"/>
+            <subject subjectCode="math100" units="3"/>
+            <subject subjectCode="socio100" units="3"/>
+            <subject subjectCode="psych101" units="3"/>
+            <subject subjectCode="buscomm101" units="3"/>
+            <subject subjectCode="busmath101" units="3"/>
+            <subject subjectCode="pe101" units="2"/>
+            <subject subjectCode="nstp101" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="acctg102" units="3">
+                <prerequisite>acctg101</prerequisite>
+            </subject>
+            <subject subjectCode="eng101" units="3">
+                <prerequisite>eng100</prerequisite>
+            </subject>
+            <subject subjectCode="math101" units="3">
+                <prerequisite>math100</prerequisite>
+            </subject>
+            <subject subjectCode="hist101" units="3"/>
+            <subject subjectCode="hum101" units="3"/>
+            <subject subjectCode="buslaw101" units="3"/>
+            <subject subjectCode="busstat101" units="3"/>
+            <subject subjectCode="pe102" units="2">
+                <prerequisite>pe101</prerequisite>
+            </subject>
+            <subject subjectCode="nstp102" units="3">
+                <prerequisite>nstp101</prerequisite>
+            </subject>
+        </secondSem>
+    </firstYear>
+    <secondYear>
+        <firstSem>
+            <subject subjectCode="acctg201" units="3">
+                <prerequisite>acctg102</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-fin201" units="3">
+                <prerequisite>acctg102</prerequisite>
+            </subject>
+            <subject subjectCode="econ101" units="3"/>
+            <subject subjectCode="rizal101" units="3"/>
+            <subject subjectCode="tax101" units="3"/>
+            <subject subjectCode="buslaw201" units="3">
+                <prerequisite>buslaw101</prerequisite>
+            </subject>
+            <subject subjectCode="pe103" units="2">
+                <prerequisite>pe102</prerequisite>
+            </subject>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="acctg202" units="3">
+                <prerequisite>acctg201</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-fin202" units="3">
+                <prerequisite>acctg-fin201</prerequisite>
+            </subject>
+            <subject subjectCode="econ102" units="3">
+                <prerequisite>econ101</prerequisite>
+            </subject>
+            <subject subjectCode="sts101" units="3"/>
+            <subject subjectCode="philo101" units="3"/>
+            <subject subjectCode="tax102" units="3">
+                <prerequisite>tax101</prerequisite>
+            </subject>
+            <subject subjectCode="pe104" units="2">
+                <prerequisite>pe103</prerequisite>
+            </subject>
+        </secondSem>
+    </secondYear>
+    <thirdYear>
+        <firstSem>
+            <subject subjectCode="acctg301" units="3">
+                <prerequisite>acctg202</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-cost301" units="3">
+                <prerequisite>acctg-fin202</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-tax301" units="3">
+                <prerequisite>tax102</prerequisite>
+            </subject>
+            <subject subjectCode="audit101" units="3">
+                <prerequisite>acctg-fin202</prerequisite>
+            </subject>
+            <subject subjectCode="research101" units="3"/>
+            <subject subjectCode="busfinance101" units="3"/>
+            <subject subjectCode="elective1" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="acctg302" units="3">
+                <prerequisite>acctg301</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-cost302" units="3">
+                <prerequisite>acctg-cost301</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-tax302" units="3">
+                <prerequisite>acctg-tax301</prerequisite>
+            </subject>
+            <subject subjectCode="audit102" units="3">
+                <prerequisite>audit101</prerequisite>
+            </subject>
+            <subject subjectCode="research102" units="3">
+                <prerequisite>research101</prerequisite>
+            </subject>
+            <subject subjectCode="busfinance102" units="3">
+                <prerequisite>busfinance101</prerequisite>
+            </subject>
+            <subject subjectCode="elective2" units="3"/>
+        </secondSem>
+    </thirdYear>
+    <fourthYear>
+        <firstSem>
+            <subject subjectCode="acctg401" units="3">
+                <prerequisite>acctg302</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-mngt401" units="3">
+                <prerequisite>acctg-cost302</prerequisite>
+            </subject>
+            <subject subjectCode="audit401" units="3">
+                <prerequisite>audit102</prerequisite>
+            </subject>
+            <subject subjectCode="lit11" units="3"/>
+            <subject subjectCode="capstone101" units="3"/>
+            <subject subjectCode="elective3" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="acctg402" units="3">
+                <prerequisite>acctg401</prerequisite>
+            </subject>
+            <subject subjectCode="acctg-mngt402" units="3">
+                <prerequisite>acctg-mngt401</prerequisite>
+            </subject>
+            <subject subjectCode="audit402" units="3">
+                <prerequisite>audit401</prerequisite>
+            </subject>
+            <subject subjectCode="cc-pract40" units="9"/>
+        </secondSem>
+    </fourthYear>
+</curriculum>

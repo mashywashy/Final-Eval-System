@@ -1,5 +1,6 @@
 package org.jah.newsys2;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -39,7 +40,9 @@ public class SubjectSelectionController {
     private List<SubjectEntry> subjectEntries = new ArrayList<>();
     private String program;
     private String studentName;
-    private String studentId;
+    private int studentId;
+    private int year;
+    private int semester;
 
     private class SubjectEntry {
         private ComboBox<String> subjectComboBox;
@@ -65,10 +68,12 @@ public class SubjectSelectionController {
         backButton.setOnAction(this::handleBack);
     }
 
-    public void setupSubjects(int count, String program, String studentName, String studentId) {
+    public void setupSubjects(int count, String program, String studentName, int studentId, int year, int semester) {
         this.program = program;
         this.studentName = studentName;
         this.studentId = studentId;
+        this.year = year;  // Store year
+        this.semester = semester;  // Store semester
 
         // Get all subjects for the program to populate the ComboBoxes
         StudentEval studentEval = new StudentEval(program);
@@ -137,7 +142,7 @@ public class SubjectSelectionController {
 
         // Get recommended subjects based on the student's results
         StudentEval studentEval = new StudentEval(program);
-        List<Subject> recommendedSubjects = studentEval.getRecommendedSubjects(subjectStatusMap);
+        List<Subject> recommendedSubjects = studentEval.getRecommendedSubjects(subjectStatusMap, year, semester);
 
         // Pass data to RecommendedSubjectsController
         openRecommendedSubjectsWindow(recommendedSubjects);
@@ -146,7 +151,7 @@ public class SubjectSelectionController {
     private void handleBack(ActionEvent event) {
         try {
             // Load the main screen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main_screen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("screen1.fxml"));
             Parent root = loader.load();
 
             javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
@@ -170,7 +175,7 @@ public class SubjectSelectionController {
 
     private void openRecommendedSubjectsWindow(List<Subject> recommendedSubjects) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("recommended_subjects.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("subject_output.fxml"));
             Parent root = loader.load();
 
             RecommendedSubjectsController controller = loader.getController();
@@ -179,6 +184,7 @@ public class SubjectSelectionController {
             Stage stage = new Stage();
             stage.setTitle("Recommended Subjects");
             stage.setScene(new Scene(root));
+            stage.setMaximized(true);
             stage.show();
 
             // Close the current window

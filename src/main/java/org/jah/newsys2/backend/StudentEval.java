@@ -14,252 +14,355 @@ import java.util.stream.Collectors;
 public class StudentEval {
     private List<Subject> allSubjects;
     private static final int MAX_UNITS = 26;
-    private static final int MIN_UNITS = 18; // Minimum recommended units to avoid underloading
+    private static final int MIN_UNITS = 18;
+    private static final int IDEAL_UNITS = 21; // Target for optimal academic load
 
     public StudentEval(String program) {
-        switch (program.toLowerCase()) {
-            case "bsit":
-                this.allSubjects = parseCurriculum("src/main/resources/org/jah/newsys2/bsit_curriculum.xml");
-                break;
-            case "bsmt":
-                this.allSubjects = parseCurriculum("src/main/resources/org/jah/newsys2/bsmt_curriculum.xml");
-                break;
-            case "bsn":
-                this.allSubjects = parseCurriculum("src/main/resources/org/jah/newsys2/bsn_curriculum.xml");
-                break;
-            case "bsa":
-                this.allSubjects = parseCurriculum("src/main/resources/org/jah/newsys2/bsa_curriculum.xml");
-                break;
-            default:
-                System.out.println("Program does not exist!");
-        }
+        this.allSubjects = loadCurriculum(program);
     }
 
-    // For new students - Only First Year, First Sem subjects
+    private List<Subject> loadCurriculum(String program) {
+        String path;
+        switch (program.toLowerCase()) {
+            case "bsit":
+                path = "src/main/resources/org/jah/newsys2/bsit_curriculum.xml";
+                break;
+            case "bsmt":
+                path = "src/main/resources/org/jah/newsys2/bsmt_curriculum.xml";
+                break;
+            case "bsn":
+                path = "src/main/resources/org/jah/newsys2/bsn_curriculum.xml";
+                break;
+            case "bsa":
+                path = "src/main/resources/org/jah/newsys2/bsa_curriculum.xml";
+                break;
+            default:
+                throw new IllegalArgumentException("Program does not exist: " + program);
+        }
+        return parseCurriculum(path);
+    }
+
+    // For freshmen students - Only return First Year, First Sem subjects
     public List<Subject> getRecommendedSubjects() {
         return allSubjects.stream()
                 .filter(subject -> "1".equals(subject.getYear()) && "1".equals(subject.getSemester()))
                 .collect(Collectors.toList());
     }
 
-    // For continuing students
-    // Updated getRecommendedSubjects method with same-semester subject handling for underload
-    public List<Subject> getRecommendedSubjects(Map<String, Boolean> recentSubjects) {
-        List<Subject> recommendations = new ArrayList<>();
-        int totalUnits = 0;
+    // Primary recommendation method for continuing students, maintaining explicit control
+    public List<Subject> getRecommendedSubjects(Map<String, Boolean> academicHistory, int currentYear, int currentSemester) {
+        // Validate input parameters
+        validateRecommendationInputs(academicHistory, currentYear, currentSemester);
 
-        // First, add failed subjects that need to be retaken
-        List<Subject> retakes = getRetakeSubjects(recentSubjects);
-        for (Subject subject : retakes) {
-            if (totalUnits + subject.getUnits() <= MAX_UNITS) {
-                recommendations.add(subject);
-                totalUnits += subject.getUnits();
-            }
+        // Calculate the next semester (for recommendations)
+        int nextYear = currentYear;
+        int nextSemester = currentSemester + 1;
+        if (nextSemester > 2) {
+            nextYear++;
+            nextSemester = 1;
         }
 
-        // Create a set of passed subjects for easy lookup
-        Set<String> passedSubjects = recentSubjects.entrySet().stream()
-                .filter(Map.Entry::getValue)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
-
-        // Create a set of all subjects the student has taken (passed or failed)
-        Set<String> takenSubjects = new HashSet<>(recentSubjects.keySet());
-
-        // Find subjects that directly follow the ones the student has passed
-        List<Subject> nextSubjects = findNextSubjects(passedSubjects);
-
-        // Sort by year and semester to maintain proper curriculum sequence
-        nextSubjects.sort(Comparator
-                .comparing(Subject::getYear)
-                .thenComparing(Subject::getSemester));
-
-        // Add next appropriate subjects up to the unit limit
-        for (Subject subject : nextSubjects) {
-            // Skip if already recommended or already taken
-            if (recommendations.contains(subject) || takenSubjects.contains(subject.getCode())) {
-                continue;
-            }
-
-            // Check if prerequisites are met and unit limit is not exceeded
-            if (hasPassedAllPrerequisites(subject, recentSubjects) &&
-                    totalUnits + subject.getUnits() <= MAX_UNITS) {
-                recommendations.add(subject);
-                totalUnits += subject.getUnits();
-            }
+        // Cap at maximum curriculum year/semester
+        if (nextYear > 4) {
+            nextYear = 4;
+            nextSemester = 2;
         }
 
-        // If we're still below the minimum units, add electives and free electives
-        if (totalUnits < MIN_UNITS) {
-            List<Subject> electiveSubjects = findAvailableElectives(takenSubjects);
-            electiveSubjects.sort(Comparator
-                    .comparing(Subject::getYear)
-                    .thenComparing(Subject::getSemester));
+        // Initialize recommendation context
+        RecommendationContext context = new RecommendationContext(
+                academicHistory, currentYear, currentSemester, nextYear, nextSemester);
 
-            for (Subject elective : electiveSubjects) {
-                if (recommendations.contains(elective) || takenSubjects.contains(elective.getCode())) {
-                    continue;
-                }
+        // Step 1: Add failed subjects that need to be retaken (highest priority)
+        addRetakeSubjects(context);
 
-                if (totalUnits + elective.getUnits() <= MAX_UNITS) {
-                    recommendations.add(elective);
-                    totalUnits += elective.getUnits();
+        // Step 2: Add core subjects for the next semester
+        addNextSemesterCoreSubjects(context);
 
-                    // Break if we've reached minimum units
-                    if (totalUnits >= MIN_UNITS) {
-                        break;
-                    }
-                }
-            }
+        // Step 3: If needed, add subjects from future semesters that have prerequisites satisfied
+        if (context.totalUnits < MIN_UNITS) {
+            addAdvancedEligibleSubjects(context);
         }
 
-        // If still underloaded, try to add more subjects from the same semester
-        if (totalUnits < MIN_UNITS) {
-            // Determine the most common semester in our current recommendations
-            Map<String, Integer> semesterCounts = new HashMap<>();
-            Map<String, String> subjectYearSem = new HashMap<>();
+        // Step 4: If still below minimum, look for any eligible subjects, even from previous semesters
+        if (context.totalUnits < MIN_UNITS) {
+            addAnyEligibleSubjects(context);
+        }
 
-            for (Subject subject : recommendations) {
-                String yearSem = subject.getYear() + "-" + subject.getSemester();
-                semesterCounts.put(yearSem, semesterCounts.getOrDefault(yearSem, 0) + 1);
-                subjectYearSem.put(subject.getCode(), yearSem);
-            }
+        return context.recommendations;
+    }
 
-            // Find the most common semester
-            String mostCommonSemester = semesterCounts.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
+    private void validateRecommendationInputs(Map<String, Boolean> academicHistory, int currentYear, int currentSemester) {
+        if (academicHistory == null) {
+            throw new IllegalArgumentException("Academic history cannot be null");
+        }
+
+        if (currentYear < 1 || currentYear > 4) {
+            throw new IllegalArgumentException("Current year must be between 1 and 4");
+        }
+
+        if (currentSemester < 1 || currentSemester > 2) {
+            throw new IllegalArgumentException("Current semester must be either 1 or 2");
+        }
+    }
+
+    // Context class to maintain state during recommendation process
+    private class RecommendationContext {
+        final Map<String, Boolean> academicHistory;
+        final Set<String> passedSubjects;
+        final Set<String> takenSubjects;
+        final List<Subject> recommendations;
+        final int currentYear;
+        final int currentSemester;
+        final int nextYear;
+        final int nextSemester;
+        int totalUnits;
+
+        RecommendationContext(Map<String, Boolean> academicHistory,
+                              int currentYear, int currentSemester,
+                              int nextYear, int nextSemester) {
+            this.academicHistory = new HashMap<>(academicHistory);
+            this.passedSubjects = academicHistory.entrySet().stream()
+                    .filter(Map.Entry::getValue)
                     .map(Map.Entry::getKey)
-                    .orElse("");
+                    .collect(Collectors.toSet());
+            this.takenSubjects = new HashSet<>(academicHistory.keySet());
+            this.recommendations = new ArrayList<>();
+            this.currentYear = currentYear;
+            this.currentSemester = currentSemester;
+            this.nextYear = nextYear;
+            this.nextSemester = nextSemester;
+            this.totalUnits = 0;
+        }
+    }
 
-            if (!mostCommonSemester.isEmpty()) {
-                String[] parts = mostCommonSemester.split("-");
-                String targetYear = parts[0];
-                String targetSem = parts[1];
+    // Add failed subjects first as they're highest priority for retaking
+    private void addRetakeSubjects(RecommendationContext context) {
+        List<Subject> retakes = context.academicHistory.entrySet().stream()
+                .filter(entry -> !entry.getValue()) // Failed subjects
+                .map(entry -> findSubjectByCode(entry.getKey()))
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(Subject::getUnits)) // Start with smaller subjects
+                .collect(Collectors.toList());
 
-                // Find additional subjects from the same semester
-                List<Subject> sameSemesterSubjects = allSubjects.stream()
-                        .filter(subject -> targetYear.equals(subject.getYear()) &&
-                                targetSem.equals(subject.getSemester()))
-                        .filter(subject -> !recommendations.contains(subject) &&
-                                !takenSubjects.contains(subject.getCode()))
-                        .filter(subject -> hasPassedAllPrerequisites(subject, recentSubjects))
-                        .collect(Collectors.toList());
+        for (Subject subject : retakes) {
+            if (canAddSubject(context, subject)) {
+                addSubjectToRecommendations(context, subject);
+            }
+        }
+    }
 
-                // Sort them to prioritize core subjects
-                sameSemesterSubjects.sort((s1, s2) -> {
-                    // Prioritize non-elective courses
-                    boolean s1Elective = s1.getCode().equals("it-el") || s1.getCode().equals("it-fre");
-                    boolean s2Elective = s2.getCode().equals("it-el") || s2.getCode().equals("it-fre");
+    // Add core subjects for the next semester based on explicit year/semester
+    private void addNextSemesterCoreSubjects(RecommendationContext context) {
+        // Get all subjects for the next semester (including electives)
+        List<Subject> nextSemesterSubjects = allSubjects.stream()
+                .filter(subject -> String.valueOf(context.nextYear).equals(subject.getYear()) &&
+                        String.valueOf(context.nextSemester).equals(subject.getSemester()))
+                .filter(subject -> !context.takenSubjects.contains(subject.getCode()))
+                .filter(subject -> hasPassedAllPrerequisites(subject, context.academicHistory))
+                .sorted(Comparator.comparing(Subject::getCode)) // Sort by code for consistency
+                .collect(Collectors.toList());
 
-                    if (s1Elective && !s2Elective) return 1;
-                    if (!s1Elective && s2Elective) return -1;
+        // Add as many subjects as possible within unit limits
+        for (Subject subject : nextSemesterSubjects) {
+            if (canAddSubject(context, subject)) {
+                addSubjectToRecommendations(context, subject);
+            }
+        }
+    }
 
-                    // If both are same type, sort by code
-                    return s1.getCode().compareTo(s2.getCode());
-                });
+    // Add subjects from future semesters if prerequisites are satisfied
+    private void addAdvancedEligibleSubjects(RecommendationContext context) {
+        // Skip if already at max units
+        if (context.totalUnits >= MAX_UNITS) {
+            return;
+        }
 
-                // Add subjects until minimum units or no more subjects available
-                for (Subject subject : sameSemesterSubjects) {
-                    if (totalUnits + subject.getUnits() <= MAX_UNITS) {
-                        recommendations.add(subject);
-                        totalUnits += subject.getUnits();
+        // Define the maximum future semester to look ahead (limit to 1 year ahead)
+        int maxLookAheadYear = Math.min(4, context.nextYear + 1);
 
-                        if (totalUnits >= MIN_UNITS) {
-                            break;
-                        }
+        // Find all future subjects the student is eligible to take
+        List<Subject> eligibleSubjects = allSubjects.stream()
+                .filter(subject -> !context.takenSubjects.contains(subject.getCode()))
+                .filter(subject -> !context.recommendations.contains(subject))
+                .filter(subject -> !isElective(subject))
+                .filter(subject -> hasPassedAllPrerequisites(subject, context.academicHistory))
+                .filter(subject -> {
+                    int subjYear = Integer.parseInt(subject.getYear());
+                    int subjSem = Integer.parseInt(subject.getSemester());
+
+                    // Check if subject is in a future semester but within our look-ahead limit
+                    if (subjYear > context.nextYear) {
+                        return subjYear <= maxLookAheadYear;
+                    } else if (subjYear == context.nextYear) {
+                        return subjSem > context.nextSemester;
                     }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
+        // Sort subjects to prioritize closer semesters first
+        eligibleSubjects.sort(Comparator
+                .comparing(Subject::getYear)
+                .thenComparing(Subject::getSemester)
+                .thenComparing(Subject::getCode));
+
+        // Add subjects until we hit minimum units
+        for (Subject subject : eligibleSubjects) {
+            if (canAddSubject(context, subject)) {
+                addSubjectToRecommendations(context, subject);
+
+                // Break if we've reached minimum units
+                if (context.totalUnits >= MIN_UNITS) {
+                    break;
+                }
+            }
+        }
+    }
+
+    // Add any eligible subjects, even from previous semesters if needed
+    private void addAnyEligibleSubjects(RecommendationContext context) {
+        // Skip if already at min units
+        if (context.totalUnits >= MIN_UNITS) {
+            return;
+        }
+
+        // Find any subjects the student is eligible to take but hasn't taken yet
+        List<Subject> eligibleSubjects = allSubjects.stream()
+                .filter(subject -> !context.takenSubjects.contains(subject.getCode()))
+                .filter(subject -> !context.recommendations.contains(subject))
+                .filter(subject -> !isElective(subject))
+                .filter(subject -> hasPassedAllPrerequisites(subject, context.academicHistory))
+                .collect(Collectors.toList());
+
+        // Sort prioritizing lower year/semester first
+        eligibleSubjects.sort(Comparator
+                .comparing(Subject::getYear)
+                .thenComparing(Subject::getSemester)
+                .thenComparing(Subject::getCode));
+
+        // Add subjects until we hit minimum units
+        for (Subject subject : eligibleSubjects) {
+            if (canAddSubject(context, subject)) {
+                addSubjectToRecommendations(context, subject);
+
+                // Break if we've reached minimum units
+                if (context.totalUnits >= MIN_UNITS) {
+                    break;
+                }
+            }
+        }
+    }
+
+    // Add electives to reach optimal unit load
+    private void optimizeWithElectives(RecommendationContext context) {
+        if (context.totalUnits >= IDEAL_UNITS) {
+            return; // Already at ideal units
+        }
+
+        // Find all electives for the next semester first
+        List<Subject> nextSemesterElectives = allSubjects.stream()
+                .filter(subject -> isElective(subject))
+                .filter(subject -> String.valueOf(context.nextYear).equals(subject.getYear()))
+                .filter(subject -> String.valueOf(context.nextSemester).equals(subject.getSemester()))
+                .collect(Collectors.toList());
+
+        // Add next semester electives first
+        for (Subject elective : nextSemesterElectives) {
+            if (canAddSubject(context, elective)) {
+                addSubjectToRecommendations(context, elective);
+                if (context.totalUnits >= IDEAL_UNITS) {
+                    return;
                 }
             }
         }
 
-        return recommendations;
-    }
+        // If still below ideal, look for electives from other semesters
+        if (context.totalUnits < IDEAL_UNITS) {
+            List<Subject> otherElectives = allSubjects.stream()
+                    .filter(subject -> isElective(subject))
+                    .filter(subject ->
+                            !String.valueOf(context.nextYear).equals(subject.getYear()) ||
+                                    !String.valueOf(context.nextSemester).equals(subject.getSemester()))
+                    .filter(subject -> Integer.parseInt(subject.getYear()) <= context.nextYear)
+                    .sorted(Comparator.comparing(Subject::getYear).thenComparing(Subject::getSemester))
+                    .collect(Collectors.toList());
 
-    // Find subjects that directly follow passed subjects in the curriculum
-    private List<Subject> findNextSubjects(Set<String> passedSubjects) {
-        List<Subject> nextSubjects = new ArrayList<>();
-
-        for (Subject subject : allSubjects) {
-            // Skip subjects already passed
-            if (passedSubjects.contains(subject.getCode())) {
-                continue;
-            }
-
-            // Check if this subject has any prerequisites that are in the passed subjects list
-            boolean isDirectFollow = !subject.getPrerequisites().isEmpty() &&
-                    subject.getPrerequisites().stream().anyMatch(passedSubjects::contains);
-
-            if (isDirectFollow) {
-                nextSubjects.add(subject);
-            }
-        }
-
-        return nextSubjects;
-    }
-
-    // Find available electives based on student's year level
-    private List<Subject> findAvailableElectives(Set<String> takenSubjects) {
-        List<Subject> electives = new ArrayList<>();
-
-        // Determine student's year level based on taken subjects
-        int yearLevel = determineStudentYearLevel(takenSubjects);
-
-        for (Subject subject : allSubjects) {
-            // Check if it's an elective (it-el or it-fre)
-            boolean isElective = subject.getCode().equals("it-el") || subject.getCode().equals("it-fre");
-
-            // Check if the elective is at or below the student's year level
-            boolean isInYearRange = Integer.parseInt(subject.getYear()) <= yearLevel;
-
-            if (isElective && isInYearRange && !takenSubjects.contains(subject.getCode())) {
-                electives.add(subject);
+            for (Subject elective : otherElectives) {
+                if (canAddSubject(context, elective)) {
+                    addSubjectToRecommendations(context, elective);
+                    if (context.totalUnits >= IDEAL_UNITS) {
+                        return;
+                    }
+                }
             }
         }
-
-        return electives;
     }
 
-    // Determine student's year level based on courses taken
-    private int determineStudentYearLevel(Set<String> takenSubjects) {
-        int highestYear = 1; // Default to first year
+    // Helper method to check if a subject is an elective
+    private boolean isElective(Subject subject) {
+        return subject.getCode().equals("it-el") || subject.getCode().equals("it-fre");
+    }
 
-        for (String code : takenSubjects) {
-            Subject subject = findSubjectByCode(code);
-            if (subject != null) {
-                int year = Integer.parseInt(subject.getYear());
-                highestYear = Math.max(highestYear, year);
+    // Check if a subject can be added to recommendations
+    private boolean canAddSubject(RecommendationContext context, Subject subject) {
+        if (isElective(subject)) {
+            // For electives, count how many of this code are already recommended
+            long recommendedCount = context.recommendations.stream()
+                    .filter(s -> s.getCode().equals(subject.getCode()))
+                    .count();
+
+            // Count how many of this code were already taken
+            long takenCount = 0;
+            for (String code : context.takenSubjects) {
+                if (code.equals(subject.getCode())) {
+                    takenCount++;
+                }
             }
+
+            // Count total instances of this elective in the curriculum for the current semester
+            long totalAvailable = allSubjects.stream()
+                    .filter(s -> s.getCode().equals(subject.getCode()))
+                    .filter(s -> String.valueOf(context.nextYear).equals(s.getYear()))
+                    .filter(s -> String.valueOf(context.nextSemester).equals(s.getSemester()))
+                    .count();
+
+            // Check if more electives of this type can be taken
+            return recommendedCount + takenCount < totalAvailable &&
+                    context.totalUnits + subject.getUnits() <= MAX_UNITS;
+        } else {
+            // For non-electives, use the original logic
+            return !context.recommendations.contains(subject) &&
+                    !context.takenSubjects.contains(subject.getCode()) &&
+                    hasPassedAllPrerequisites(subject, context.academicHistory) &&
+                    context.totalUnits + subject.getUnits() <= MAX_UNITS;
+        }
+    }
+
+    // Add a subject to recommendations
+    private void addSubjectToRecommendations(RecommendationContext context, Subject subject) {
+        context.recommendations.add(subject);
+        context.totalUnits += subject.getUnits();
+    }
+
+    // Check if all prerequisites for a subject have been passed
+    private boolean hasPassedAllPrerequisites(Subject subject, Map<String, Boolean> academicHistory) {
+        if (subject.getPrerequisites().isEmpty()) {
+            return true; // No prerequisites
         }
 
-        // For third and fourth year students, if they've completed most of the previous year's courses
-        if (highestYear >= 2) {
-            int prevYearCount = countSubjectsInYear(highestYear);
-            int takenPrevYearCount = countTakenSubjectsInYear(takenSubjects, highestYear);
-
-            // If they've taken more than 75% of the previous year's courses, consider them in the next year
-            if (takenPrevYearCount >= prevYearCount * 0.75 && highestYear < 4) {
-                highestYear++;
-            }
-        }
-
-        return highestYear;
+        return subject.getPrerequisites().stream()
+                .allMatch(prereq -> academicHistory.getOrDefault(prereq, false));
     }
 
-    // Count total subjects in a specific year
-    private int countSubjectsInYear(int year) {
-        return (int) allSubjects.stream()
-                .filter(s -> Integer.parseInt(s.getYear()) == year)
-                .count();
+    // Find a subject by its code
+    private Subject findSubjectByCode(String code) {
+        return allSubjects.stream()
+                .filter(subject -> subject.getCode().equals(code))
+                .findFirst()
+                .orElse(null);
     }
 
-    // Count how many subjects from a specific year the student has taken
-    private int countTakenSubjectsInYear(Set<String> takenSubjects, int year) {
-        return (int) allSubjects.stream()
-                .filter(s -> Integer.parseInt(s.getYear()) == year)
-                .filter(s -> takenSubjects.contains(s.getCode()))
-                .count();
-    }
-
+    // Parse the curriculum XML file
     private List<Subject> parseCurriculum(String xmlPath) {
         List<Subject> subjects = new ArrayList<>();
         try {
@@ -299,15 +402,12 @@ public class StudentEval {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error parsing curriculum XML: " + e.getMessage());
+            throw new RuntimeException("Error parsing curriculum XML: " + e.getMessage(), e);
         }
         return subjects;
     }
 
-    public List<Subject> getAllSubjects() {
-        return allSubjects;
-    }
-
+    // Extract year from node name
     private String extractYear(String nodeName) {
         if (nodeName.toLowerCase().contains("firstyear")) return "1";
         if (nodeName.toLowerCase().contains("secondyear")) return "2";
@@ -316,29 +416,15 @@ public class StudentEval {
         return "";
     }
 
+    // Extract semester from node name
     private String extractSemester(String nodeName) {
         if (nodeName.toLowerCase().contains("firstsem")) return "1";
         if (nodeName.toLowerCase().contains("secondsem")) return "2";
         return "";
     }
 
-    private List<Subject> getRetakeSubjects(Map<String, Boolean> recentSubjects) {
-        return recentSubjects.entrySet().stream()
-                .filter(entry -> !entry.getValue())
-                .map(entry -> findSubjectByCode(entry.getKey()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-    private boolean hasPassedAllPrerequisites(Subject subject, Map<String, Boolean> recentSubjects) {
-        return subject.getPrerequisites().stream()
-                .allMatch(prereq -> recentSubjects.getOrDefault(prereq, false));
-    }
-
-    private Subject findSubjectByCode(String code) {
-        return allSubjects.stream()
-                .filter(subject -> subject.getCode().equals(code))
-                .findFirst()
-                .orElse(null);
+    // Get all subjects in the curriculum
+    public List<Subject> getAllSubjects() {
+        return new ArrayList<>(allSubjects);
     }
 }

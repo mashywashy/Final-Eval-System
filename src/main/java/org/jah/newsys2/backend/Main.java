@@ -1,5 +1,4 @@
-package org.jah.newsys2.backend;//TIP To <b>Run</b> code, press <shortcut actionId="Run"/>
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+package org.jah.newsys2.backend;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +15,11 @@ public class Main {
         subMap.put("it-testqua31", true);
         subMap.put("cc-hci31", true);
         subMap.put("cc-rescom31", true);
-        subMap.put("it-el", true);
-        subMap.put("it-fre", true);
+        subMap.put("it-el1", true);
+        subMap.put("it-fre1", true);
+        subMap.put("it-fre2", true);
 
-        List<Subject> subs = se.getRecommendedSubjects(subMap);
+        List<Subject> subs = se.getRecommendedSubjects(subMap, 3, 1);
         for(Subject sub : subs) {
             System.out.println(sub.getCode() + " " + sub.getUnits());
             totalUnits += sub.getUnits();

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<curriculum>
+    <firstYear>
+        <firstSem>
+            <subject subjectCode="bio101" units="3"/>
+            <subject subjectCode="chem101" units="3"/>
+            <subject subjectCode="eng100" units="3"/>
+            <subject subjectCode="math100" units="3"/>
+            <subject subjectCode="psych101" units="3"/>
+            <subject subjectCode="socio100" units="3"/>
+            <subject subjectCode="nursing-orient101" units="3"/>
+            <subject subjectCode="pe101" units="2"/>
+            <subject subjectCode="nstp101" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="bio102" units="3">
+                <prerequisite>bio101</prerequisite>
+            </subject>
+            <subject subjectCode="chem102" units="3">
+                <prerequisite>chem101</prerequisite>
+            </subject>
+            <subject subjectCode="eng101" units="3">
+                <prerequisite>eng100</prerequisite>
+            </subject>
+            <subject subjectCode="anatomy101" units="3"/>
+            <subject subjectCode="physiology101" units="3"/>
+            <subject subjectCode="health-assessment101" units="3"/>
+            <subject subjectCode="pe102" units="2">
+                <prerequisite>pe101</prerequisite>
+            </subject>
+            <subject subjectCode="nstp102" units="3">
+                <prerequisite>nstp101</prerequisite>
+            </subject>
+        </secondSem>
+    </firstYear>
+    <secondYear>
+        <firstSem>
+            <subject subjectCode="microbio101" units="3"/>
+            <subject subjectCode="nutrition101" units="3"/>
+            <subject subjectCode="pathophysiology101" units="3"/>
+            <subject subjectCode="pharmacology101" units="3"/>
+            <subject subjectCode="nursing-fundamentals101" units="3"/>
+            <subject subjectCode="pe103" units="2">
+                <prerequisite>pe102</prerequisite>
+            </subject>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="nursing-fundamentals102" units="3">
+                <prerequisite>nursing-fundamentals101</prerequisite>
+            </subject>
+            <subject subjectCode="pharmacology102" units="3">
+                <prerequisite>pharmacology101</prerequisite>
+            </subject>
+            <subject subjectCode="maternal-child-nursing101" units="3"/>
+            <subject subjectCode="community-health101" units="3"/>
+            <subject subjectCode="health-education101" units="3"/>
+            <subject subjectCode="pe104" units="2">
+                <prerequisite>pe103</prerequisite>
+            </subject>
+        </secondSem>
+    </secondYear>
+    <thirdYear>
+        <firstSem>
+            <subject subjectCode="medical-surgical-nursing101" units="3"/>
+            <subject subjectCode="pediatric-nursing101" units="3"/>
+            <subject subjectCode="psychiatric-nursing101" units="3"/>
+            <subject subjectCode="research101" units="3"/>
+            <subject subjectCode="elective1" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="medical-surgical-nursing102" units="3">
+                <prerequisite>medical-surgical-nursing101</prerequisite>
+            </subject>
+            <subject subjectCode="critical-care-nursing101" units="3"/>
+            <subject subjectCode="geriatric-nursing101" units="3"/>
+            <subject subjectCode="nursing-leadership101" units="3"/>
+            <subject subjectCode="research102" units="3">
+                <prerequisite>research101</prerequisite>
+            </subject>
+            <subject subjectCode="elective2" units="3"/>
+        </secondSem>
+    </thirdYear>
+    <fourthYear>
+        <firstSem>
+            <subject subjectCode="nursing-ethics101" units="3"/>
+            <subject subjectCode="nursing-laws101" units="3"/>
+            <subject subjectCode="capstone101" units="3"/>
+            <subject subjectCode="elective3" units="3"/>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="clinical-practicum" units="12"/>
+        </secondSem>
+    </fourthYear>
+</curriculum>
