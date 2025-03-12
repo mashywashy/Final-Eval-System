@@ -300,11 +300,15 @@ public class StudentEval {
 
     // Helper method to check if a subject is an elective
     private boolean isElective(Subject subject) {
-        return subject.getCode().equals("it-el") || subject.getCode().equals("it-fre");
+        return subject.isElective();
     }
 
     // Check if a subject can be added to recommendations
     private boolean canAddSubject(RecommendationContext context, Subject subject) {
+        if (isElective(subject) && context.nextYear <= 2) {
+            return false; // Don't allow any electives for 1st and 2nd year students
+        }
+
         if (isElective(subject)) {
             // For electives, count how many of this code are already recommended
             long recommendedCount = context.recommendations.stream()
@@ -389,8 +393,9 @@ public class StudentEval {
                         Element subjectElem = (Element) subjectNodes.item(k);
                         String code = subjectElem.getAttribute("subjectCode");
                         int units = Integer.parseInt(subjectElem.getAttribute("units"));
+                        boolean isElective = Boolean.parseBoolean(subjectElem.getAttribute("isElective"));
 
-                        Subject subject = new Subject(code, units, year, semester);
+                        Subject subject = new Subject(code, units, year, semester, isElective);
 
                         NodeList prereqs = subjectElem.getElementsByTagName("prerequisite");
                         for (int l = 0; l < prereqs.getLength(); l++) {

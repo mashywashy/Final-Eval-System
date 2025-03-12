@@ -37,20 +37,36 @@ public class AppController {
         semesterComboBox.getItems().addAll("1", "2");
 
         // Add listener to newStudentComboBox to enable/disable subjectsField
-        newStudentComboBox.setOnAction(event -> handleNewStudentSelection());
+        newStudentComboBox.setOnAction(event -> updateSubjectsFieldState());
+
+        // Add listeners to year and semester ComboBoxes
+        yearLevelComboBox.setOnAction(event -> updateSubjectsFieldState());
+        semesterComboBox.setOnAction(event -> updateSubjectsFieldState());
 
         // Handle Next button click
         nextButton.setOnAction(event -> handleNextButton());
         cancelButton.setOnAction(event -> handleCancelButton());
     }
 
-    private void handleNewStudentSelection() {
+    private void updateSubjectsFieldState() {
         boolean isNewStudent = "Yes".equals(newStudentComboBox.getValue());
-        subjectsField.setDisable(isNewStudent);
+        boolean isFirstYearFirstSem = "1".equals(yearLevelComboBox.getValue()) &&
+                "1".equals(semesterComboBox.getValue());
+
+        // Disable subjects field if new student OR first year first semester
+        boolean shouldDisable = isNewStudent || isFirstYearFirstSem;
+        subjectsField.setDisable(shouldDisable);
+
+        // If disabled and not already cleared by newStudentComboBox, clear it
+        if (shouldDisable && !isNewStudent) {
+            subjectsField.clear();
+        }
+
+        // Only disable year and semester combo boxes for new students
         yearLevelComboBox.setDisable(isNewStudent);
         semesterComboBox.setDisable(isNewStudent);
+
         if (isNewStudent) {
-            subjectsField.clear();
             yearLevelComboBox.setValue(null);
             semesterComboBox.setValue(null);
         }
@@ -76,22 +92,32 @@ public class AppController {
             return;
         }
 
+        boolean isFirstYearFirstSem = "1".equals(yearLevel) && "1".equals(semester);
 
-        if ("No".equals(isNewStudent)) {
+        if ("No".equals(isNewStudent) && !isFirstYearFirstSem) {
             if (subjectsField.getText().isEmpty() || !isNumeric(subjectsField.getText())) {
                 showAlert("Error", "Please enter a valid number of subjects taken.");
                 return;
             }
 
+
             int subjectCount = Integer.parseInt(subjectsField.getText());
+            int yearLevelInt = Integer.parseInt(yearLevel);
+
+            if (yearLevelInt <= 3 && subjectCount < 8) {
+                showAlert("Error", "Students in year 3 and below must take at least 8 subjects.");
+                return;
+            }
+
             if (subjectCount <= 0 || subjectCount > 8) {
                 showAlert("Error", "You can take between 1 and 8 subjects only.");
                 return;
             }
         }
 
-        if ("Yes".equals(isNewStudent)) {
-            // For new students, directly show recommendations
+        // Treat first year first semester students like new students
+        if ("Yes".equals(isNewStudent) || isFirstYearFirstSem) {
+            // For new students or first year first sem, directly show recommendations
             StudentEval se = new StudentEval(program);
             List<Subject> recommendedSubjects = se.getRecommendedSubjects();
             displayRecommendedSubjects(name, id, recommendedSubjects);
@@ -125,7 +151,6 @@ public class AppController {
 
             Object controller = loader.getController();
 
-
             if (controller instanceof SubjectSelectionController) {
                 ((SubjectSelectionController) controller).setupSubjects(subjectCount, program, name, Integer.parseInt(id), Integer.parseInt(year), Integer.parseInt(semester));
             } else {
@@ -149,7 +174,6 @@ public class AppController {
         }
     }
 
-    // This method replaces the existing displayRecommendedSubjects method in AppController.java
     private void displayRecommendedSubjects(String name, String id, List<Subject> recommendedSubjects) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("recommended_subjects.fxml"));
@@ -163,8 +187,6 @@ public class AppController {
             stage.setScene(new Scene(root, 600, 400));
             stage.setMaximized(true);
             stage.show();
-
-
 
             // Close the current window
             Stage currentStage = (Stage) nextButton.getScene().getWindow();

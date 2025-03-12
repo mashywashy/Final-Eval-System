@@ -90,7 +90,7 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <ComboBox fx:id="yearLevelComboBox" disable="true" prefWidth="300.0" promptText="Select year">
+                                        <ComboBox fx:id="yearLevelComboBox" disable="true" prefWidth="300.0" promptText="Select upcoming year">
                                             <effect>
                                                 <DropShadow color="#00000022" height="5.0" radius="2.0" width="5.0" />
                                             </effect>
@@ -105,7 +105,7 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <ComboBox fx:id="semesterComboBox" disable="true" prefWidth="300.0" promptText="Select semester">
+                                        <ComboBox fx:id="semesterComboBox" disable="true" prefWidth="300.0" promptText="Select upcoming semester">
                                             <effect>
                                                 <DropShadow color="#00000022" height="5.0" radius="2.0" width="5.0" />
                                             </effect>

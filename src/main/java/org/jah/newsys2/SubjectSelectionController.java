@@ -1,6 +1,5 @@
 package org.jah.newsys2;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,8 +19,10 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jah.newsys2.backend.StudentEval;
 import org.jah.newsys2.backend.Subject;
@@ -43,6 +44,7 @@ public class SubjectSelectionController {
     private int studentId;
     private int year;
     private int semester;
+    private Set<String> selectedSubjects = new HashSet<>(); // Track selected subjects
 
     private class SubjectEntry {
         private ComboBox<String> subjectComboBox;
@@ -72,8 +74,8 @@ public class SubjectSelectionController {
         this.program = program;
         this.studentName = studentName;
         this.studentId = studentId;
-        this.year = year;  // Store year
-        this.semester = semester;  // Store semester
+        this.year = year;
+        this.semester = semester;
 
         // Get all subjects for the program to populate the ComboBoxes
         StudentEval studentEval = new StudentEval(program);
@@ -103,6 +105,9 @@ public class SubjectSelectionController {
         subjectComboBox.setPrefWidth(150);
         subjectComboBox.setPromptText("Select Subject");
 
+        // Add listener to handle subject selection and prevent duplicates
+        subjectComboBox.setOnAction(e -> handleSubjectSelection(subjectComboBox));
+
         Label statusLabel = new Label("Status:");
         statusLabel.setPrefWidth(50);
 
@@ -119,18 +124,67 @@ public class SubjectSelectionController {
         subjectEntries.add(new SubjectEntry(subjectComboBox, statusComboBox));
     }
 
+    private void handleSubjectSelection(ComboBox<String> changedComboBox) {
+        String selectedSubject = changedComboBox.getValue();
+
+        if (selectedSubject == null) {
+            return;
+        }
+
+        // If this subject was already selected in another combo box, show error and reset
+        if (selectedSubjects.contains(selectedSubject)) {
+            for (SubjectEntry entry : subjectEntries) {
+                if (entry.subjectComboBox != changedComboBox &&
+                        selectedSubject.equals(entry.subjectComboBox.getValue())) {
+                    showAlert(AlertType.ERROR, "Duplicate Selection",
+                            "Subject '" + selectedSubject + "' is already selected. Please choose a different subject.");
+                    changedComboBox.setValue(null);
+                    return;
+                }
+            }
+        }
+
+        // Update selected subjects set
+        updateSelectedSubjects();
+    }
+
+    private void updateSelectedSubjects() {
+        // Clear and rebuild the set of selected subjects
+        selectedSubjects.clear();
+
+        for (SubjectEntry entry : subjectEntries) {
+            String subject = entry.getSubject();
+            if (subject != null) {
+                selectedSubjects.add(subject);
+            }
+        }
+    }
+
     private void handleSubmit(ActionEvent event) {
         // Validate entries
         boolean isValid = true;
+        Set<String> subjectSet = new HashSet<>();
+
         for (SubjectEntry entry : subjectEntries) {
-            if (entry.getSubject() == null || entry.statusComboBox.getValue() == null) {
+            String subject = entry.getSubject();
+
+            // Check if all fields are filled
+            if (subject == null || entry.statusComboBox.getValue() == null) {
                 isValid = false;
-                break;
+                showAlert(AlertType.ERROR, "Error", "Please complete all subject entries.");
+                return;
+            }
+
+            // Check for duplicates (extra validation)
+            if (!subjectSet.add(subject)) {
+                isValid = false;
+                showAlert(AlertType.ERROR, "Error", "Duplicate subject found: " + subject +
+                        ". Each subject can only be entered once.");
+                return;
             }
         }
 
         if (!isValid) {
-            showAlert(AlertType.ERROR, "Error", "Please complete all subject entries.");
             return;
         }
 
@@ -151,7 +205,7 @@ public class SubjectSelectionController {
     private void handleBack(ActionEvent event) {
         try {
             // Load the main screen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("screen1.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main_screen.fxml"));
             Parent root = loader.load();
 
             javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
@@ -175,7 +229,7 @@ public class SubjectSelectionController {
 
     private void openRecommendedSubjectsWindow(List<Subject> recommendedSubjects) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("subject_output.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("recommended_subjects.fxml"));
             Parent root = loader.load();
 
             RecommendedSubjectsController controller = loader.getController();
@@ -193,7 +247,6 @@ public class SubjectSelectionController {
             e.printStackTrace();
         }
     }
-
 
     private void showAlert(AlertType type, String title, String message) {
         Alert alert = new Alert(type);
