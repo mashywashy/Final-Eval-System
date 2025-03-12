@@ -1,0 +1,203 @@
+<curriculum>
+    <firstYear>
+        <firstSem>
+            <subject subjectCode="eng100" units="3" />
+            <subject subjectCode="socio102" units="3" />
+            <subject subjectCode="math100" units="3" />
+            <subject subjectCode="psych101" units="3" />
+            <subject subjectCode="cc-intcom11" units="3" />
+            <subject subjectCode="cc-comprog11" units="3" />
+            <subject subjectCode="it-webdev11" units="3" />
+            <subject subjectCode="pe101" units="2" />
+            <subject subjectCode="nstp101" units="3" />
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="eng101" units="3">
+                <prerequisites>
+                    <prerequisite>eng100</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="entrep101" units="3" />
+            <subject subjectCode="math101" units="3">
+                <prerequisites>
+                    <prerequisite>math100</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="hist101" units="3" />
+            <subject subjectCode="hum101" units="3" />
+            <subject subjectCode="cc-comprog12" units="3">
+                <prerequisites>
+                    <prerequisite>cc-comprog11</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-discret12" units="3">
+                <prerequisites>
+                    <prerequisite>cc-intcom11</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="pe102" units="2">
+                <prerequisites>
+                    <prerequisite>pe101</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="nstp102" units="3">
+                <prerequisites>
+                    <prerequisite>nstp101</prerequisite>
+                </prerequisites>
+            </subject>
+        </secondSem>
+    </firstYear>
+    <secondYear>
+        <firstSem>
+            <subject subjectCode="socio101" units="3" />
+            <subject subjectCode="rizal101" units="3" />
+            <subject subjectCode="cc-digilog21" units="3">
+                <prerequisites>
+                    <prerequisite>cc-discret12</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-ooprog21" units="3">
+                <prerequisites>
+                    <prerequisite>cc-comprog12</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-sad21" units="3">
+                <prerequisites>
+                    <prerequisite>cc-comprog12</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-acctg21" units="3">
+                <prerequisites>
+                    <prerequisite>math101</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-twrite21" units="3">
+                <prerequisites>
+                    <prerequisite>eng101</prerequisite>
+                    <prerequisite>cc-intcom11</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="pe103" units="2">
+                <prerequisites>
+                    <prerequisite>pe102</prerequisite>
+                </prerequisites>
+            </subject>
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="sts101" units="3" />
+            <subject subjectCode="philo101" units="3" />
+            <subject subjectCode="cc-quameth22" units="3">
+                <prerequisites>
+                    <prerequisite>cc-discret12</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-platech22" units="3">
+                <prerequisites>
+                    <prerequisite>cc-digilog21</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-appsdev22" units="3">
+                <prerequisites>
+                    <prerequisite>cc-ooprog21</prerequisite>
+                    <prerequisite>it-sad21</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-datastruc22" units="3">
+                <prerequisites>
+                    <prerequisite>cc-ooprog21</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-datacom22" units="3">
+                <prerequisites>
+                    <prerequisite>cc-digilog21</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="pe104" units="2">
+                <prerequisites>
+                    <prerequisite>pe103</prerequisite>
+                </prerequisites>
+            </subject>
+        </secondSem>
+    </secondYear>
+    <thirdYear>
+        <firstSem>
+            <subject subjectCode="it-imdbsys31" units="3">
+                <prerequisites>
+                    <prerequisite>cc-appsdev22</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-network31" units="3">
+                <prerequisites>
+                    <prerequisite>cc-datacom22</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-testqua31" units="3">
+                <prerequisites>
+                    <prerequisite>cc-appsdev22</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-hci31" units="3">
+                <prerequisites>
+                    <prerequisite>cc-appsdev22</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-rescom31" units="3">
+                <prerequisites>
+                    <prerequisite>cc-twrite21</prerequisite>
+                    <prerequisite>cc-quameth22</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-el1" units="3" />
+            <subject subjectCode="it-fre1" units="3" />
+            <subject subjectCode="it-fre2" units="3" />
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="it-imdbsys32" units="3">
+                <prerequisites>
+                    <prerequisite>it-imdbsys31</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-infosec32" units="3">
+                <prerequisites>
+                    <prerequisite>it-imdbsys31</prerequisite>
+                    <prerequisite>it-network31</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-sysarch32" units="3">
+                <prerequisites>
+                    <prerequisite>it-testqua31</prerequisite>
+                    <prerequisite>cc-hci31</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="cc-techno32" units="3">
+                <prerequisites>
+                    <prerequisite>cc-rescom31</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-intprog32" units="3">
+                <prerequisites>
+                    <prerequisite>it-imdbsys31</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-sysadmin32" units="3">
+                <prerequisites>
+                    <prerequisite>it-network31</prerequisite>
+                </prerequisites>
+            </subject>
+            <subject subjectCode="it-el2" units="3" />
+            <subject subjectCode="it-fre3" units="3" />
+        </secondSem>
+    </thirdYear>
+    <fourthYear>
+        <firstSem>
+            <subject subjectCode="lit11" units="3" />
+            <subject subjectCode="it-cpstone40" units="3" />
+            <subject subjectCode="it-el" units="3" />
+            <subject subjectCode="it-fre" units="3" />
+        </firstSem>
+        <secondSem>
+            <subject subjectCode="cc-pract40" units="9" />
+            <subject subjectCode="it-el" units="3" />
+        </secondSem>
+    </fourthYear>
+</curriculum>
