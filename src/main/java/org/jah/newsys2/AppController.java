@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import org.jah.newsys2.backend.RecommendAI;
 import org.jah.newsys2.backend.StudentEval;
 import org.jah.newsys2.backend.Subject;
 
@@ -180,7 +181,9 @@ public class AppController {
             Parent root = loader.load();
 
             RecommendedSubjectsController controller = loader.getController();
-            controller.setupRecommendedSubjects(name, Integer.parseInt(id), programComboBox.getValue(), recommendedSubjects);
+            RecommendAI rAi = new RecommendAI();
+            String recommendation = rAi.recommendAI(recommendedSubjects, programComboBox.getValue(), name);
+            controller.setupRecommendedSubjects(name, Integer.parseInt(id), programComboBox.getValue(), recommendation);
 
             Stage stage = new Stage();
             stage.setTitle("Recommended Subjects");

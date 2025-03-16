@@ -122,6 +122,10 @@ public class StudentEval {
         String nextTermKey = getNextTermKey(year, semester);
         List<Subject> nextTermSubjects = yearSemesterMap.get(nextTermKey);
 
+        if (nextTermSubjects == null) {
+            throw new IllegalArgumentException("Invalid term: " + nextTermKey);
+        }
+
         // Check prerequisites for next term subjects
         for (Subject subject : nextTermSubjects) {
             if (passedSubjects.containsAll(subject.getPrerequisites())) {
@@ -131,37 +135,35 @@ public class StudentEval {
 
         // Calculate current load
         int currentLoad = recommendedSubs.stream().mapToInt(Subject::getUnits).sum();
-        int maxLoad = 21; // Example max load, adjust as needed
+        int maxLoad = 21; // Maximum allowed units
 
         // Add subjects to recommendedSubs until maxLoad is reached
-        while (currentLoad < maxLoad && !potentialNewSubs.isEmpty()) {
-            Subject subject = potentialNewSubs.remove(0);
-            recommendedSubs.add(subject);
-            currentLoad += subject.getUnits();
+        for (Subject subject : potentialNewSubs) {
+            if (currentLoad + subject.getUnits() <= maxLoad) {
+                recommendedSubs.add(subject);
+                currentLoad += subject.getUnits();
+            } else {
+                break; // Stop if adding this subject would exceed maxLoad
+            }
         }
 
-        // If currentLoad is still less than maxLoad - 2, look at term after next
-        if (currentLoad < maxLoad - 2) {
+        // If currentLoad is still less than maxLoad, look at term after next
+        if (currentLoad < maxLoad) {
             String termAfterNextKey = getNextTermKey(year + (semester == 2 ? 1 : 0), semester == 2 ? 1 : 2);
             List<Subject> termAfterNextSubjects = yearSemesterMap.get(termAfterNextKey);
-            List<Subject> advancedSubs = new ArrayList<>();
 
-            for (Subject subject : termAfterNextSubjects) {
-                if (subject.getPrerequisites().isEmpty() || passedSubjects.containsAll(subject.getPrerequisites())) {
-                    advancedSubs.add(subject);
+            if (termAfterNextSubjects != null) {
+                for (Subject subject : termAfterNextSubjects) {
+                    if (passedSubjects.containsAll(subject.getPrerequisites())) {
+                        if (currentLoad + subject.getUnits() <= maxLoad) {
+                            recommendedSubs.add(subject);
+                            currentLoad += subject.getUnits();
+                        } else {
+                            break; // Stop if adding this subject would exceed maxLoad
+                        }
+                    }
                 }
             }
-
-            // Create alternate recommendation
-            List<Subject> alternateRecommendation = new ArrayList<>(recommendedSubs);
-            for (Subject subject : advancedSubs) {
-                if (currentLoad + subject.getUnits() <= maxLoad) {
-                    alternateRecommendation.add(subject);
-                    currentLoad += subject.getUnits();
-                }
-            }
-
-            // Optionally, you can return alternateRecommendation as well
         }
 
         return recommendedSubs;
@@ -180,8 +182,29 @@ public class StudentEval {
             case 2: yearKey = "secondYear"; break;
             case 3: yearKey = "thirdYear"; break;
             case 4: yearKey = "fourthYear"; break;
-            default: throw new IllegalArgumentException("Invalid year");
+            default: throw new IllegalArgumentException("Invalid year: " + year);
         }
-        return yearKey + "_" + (semester == 1 ? "secondSem" : "firstSem");
+
+        String semesterKey;
+        if (semester == 1) {
+            semesterKey = "secondSem";
+        } else if (semester == 2) {
+            semesterKey = "firstSem";
+            yearKey = getNextYearKey(yearKey); // Move to the next year
+        } else {
+            throw new IllegalArgumentException("Invalid semester: " + semester);
+        }
+
+        return yearKey + "_" + semesterKey;
+    }
+
+    private String getNextYearKey(String currentYearKey) {
+        switch (currentYearKey) {
+            case "firstYear": return "secondYear";
+            case "secondYear": return "thirdYear";
+            case "thirdYear": return "fourthYear";
+            case "fourthYear": throw new IllegalArgumentException("No next year after fourthYear");
+            default: throw new IllegalArgumentException("Invalid year key: " + currentYearKey);
+        }
     }
 }

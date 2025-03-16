@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import org.jah.newsys2.backend.RecommendAI;
 import org.jah.newsys2.backend.StudentEval;
 import org.jah.newsys2.backend.Subject;
 
@@ -194,10 +195,13 @@ public class SubjectSelectionController {
 
         // Get recommended subjects based on the student's results
         StudentEval studentEval = new StudentEval(program);
+        RecommendAI rAi = new RecommendAI();
         List<Subject> recommendedSubjects = studentEval.getRecommendedSubjects(subjectStatusMap, year, semester);
 
+        String res = rAi.recommendAI(recommendedSubjects, program, studentName);
+
         // Pass data to RecommendedSubjectsController
-        openRecommendedSubjectsWindow(recommendedSubjects);
+        openRecommendedSubjectsWindow(res);
     }
 
     private void handleBack(ActionEvent event) {
@@ -225,13 +229,15 @@ public class SubjectSelectionController {
         }
     }
 
-    private void openRecommendedSubjectsWindow(List<Subject> recommendedSubjects) {
+    // Change from List<Subject> to String parameter
+    private void openRecommendedSubjectsWindow(String recommendation) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("recommended_subjects.fxml"));
             Parent root = loader.load();
 
             RecommendedSubjectsController controller = loader.getController();
-            controller.setupRecommendedSubjects(studentName, studentId, program, recommendedSubjects);
+            // Update this method call to match the new parameter
+            controller.setupRecommendedSubjects(studentName, studentId, program, recommendation);
 
             Stage stage = new Stage();
             stage.setTitle("Recommended Subjects");
@@ -239,7 +245,6 @@ public class SubjectSelectionController {
             stage.setMaximized(true);
             stage.show();
 
-            // Close the current window
             ((Stage) submitButton.getScene().getWindow()).close();
         } catch (IOException e) {
             e.printStackTrace();

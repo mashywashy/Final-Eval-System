@@ -10,8 +10,9 @@ public class RecommendAI {
     private static final OkHttpClient client = new OkHttpClient();
     private static final String API_URL = "http://localhost:8080/ask";
 
-    public String recommendAI(List<Subject> subjects, String program) {
-        StringBuilder prompt = new StringBuilder("Present following recommended subjects for " + program + " are: ");
+    public String recommendAI(List<Subject> subjects, String program, String name) {
+        StringBuilder prompt = new StringBuilder("Present following recommended subjects for a student by categorizing which are majors which are " +
+                "minors and calculate the total units to(Student Name): " + name + ", Program: " + program);
 
         for (Subject subject : subjects) {
             prompt.append(subject.getCode()).append(" (").append(subject.getUnits()).append(" units), ");
@@ -21,7 +22,7 @@ public class RecommendAI {
         if (response != null) {
             JSONObject jsonObject = new JSONObject(response);
             String reply = jsonObject.optString("reply", "no reply found");
-            System.out.println("reply" + reply);
+            System.out.println(reply);
             return reply;
         } else {
             System.out.println("Failed to fetch response.");
@@ -31,16 +32,7 @@ public class RecommendAI {
     }
 
     public static void main(String[] args) {
-        String prompt = "Tell me a fun fact about space.";
-        String response = sendPostRequest(prompt);
 
-        if (response != null) {
-            JSONObject jsonObject = new JSONObject(response);
-            String reply = jsonObject.optString("reply", "no reply found");
-            System.out.println("Response: " + reply);
-        } else {
-            System.out.println("Failed to fetch response.");
-        }
     }
 
     private static String sendPostRequest(String prompt) {
