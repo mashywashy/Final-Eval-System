@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -19,150 +18,129 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.jah.newsys2.RecommendedSubjectsController">
     <children>
-        <!-- Header with title -->
-        <StackPane style="-fx-background-color: #3498db;">
+        <!-- Maroon header with shadow -->
+        <StackPane style="-fx-background-color: #800000; -fx-background-radius: 0 0 15 15;">
             <padding>
-                <Insets bottom="15.0" top="15.0" />
+                <Insets bottom="20.0" top="20.0" />
             </padding>
             <children>
                 <Label text="Recommended Subjects" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="Segoe UI Bold" size="22.0" />
                     </font>
+                    <effect>
+                        <DropShadow color="#590000" radius="3" spread="0.2" />
+                    </effect>
                 </Label>
             </children>
         </StackPane>
 
         <AnchorPane fx:id="rootPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="469.0" prefWidth="700.0"
-                    style="-fx-background-color: #f5f5f5;" VBox.vgrow="ALWAYS">
+                    style="-fx-background-color: #f8f5f2;" VBox.vgrow="ALWAYS">
             <padding>
                 <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
             </padding>
             <children>
+                <!-- Student Info Section -->
                 <VBox spacing="15.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="20.0">
                     <children>
-                        <!-- Student Information Section -->
-                        <Label style="-fx-text-fill: #3498db;" text="Student Information">
-                            <font>
-                                <Font name="System Bold" size="16.0" />
-                            </font>
-                        </Label>
+                        <Label style="-fx-text-fill: #800000; -fx-font-family: 'Segoe UI Bold'; -fx-font-size: 18;"
+                               text="Student Information" />
 
-                        <Separator />
+                        <Separator style="-fx-background-color: #d0a0a0;" />
 
                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                             <children>
-                                <Label prefWidth="100.0" text="Name:">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="nameLabel" text="Student Name">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
+                                <Label prefWidth="100.0" text="Name:"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI'; -fx-font-size: 14;" />
+                                <Label fx:id="nameLabel" text="Student Name"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 14;" />
                             </children>
                         </HBox>
 
                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                             <children>
-                                <Label prefWidth="100.0" text="ID Number:">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="idLabel" text="ID Number">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
+                                <Label prefWidth="100.0" text="ID Number:"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI'; -fx-font-size: 14;" />
+                                <Label fx:id="idLabel" text="ID Number"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 14;" />
                             </children>
                         </HBox>
 
                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                             <children>
-                                <Label prefWidth="100.0" text="Program:">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="programLabel" text="Program">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
+                                <Label prefWidth="100.0" text="Program:"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI'; -fx-font-size: 14;" />
+                                <Label fx:id="programLabel" text="Program"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 14;" />
                             </children>
                         </HBox>
                     </children>
                 </VBox>
 
-                <!-- Recommended Subjects Section -->
+                <!-- Subjects Table Section -->
                 <VBox spacing="15.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="180.0">
                     <children>
-                        <Label style="-fx-text-fill: #3498db;" text="Recommended Subjects">
-                            <font>
-                                <Font name="System Bold" size="16.0" />
-                            </font>
-                        </Label>
+                        <Label style="-fx-text-fill: #800000; -fx-font-family: 'Segoe UI Bold'; -fx-font-size: 18;"
+                               text="Recommended Subjects" />
 
-                        <Separator />
+                        <Separator style="-fx-background-color: #d0a0a0;" />
 
-                        <TableView fx:id="subjectsTable" prefHeight="180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <TableView fx:id="subjectsTable" prefHeight="180.0"
+                                   style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e0d7d7; -fx-padding: 5;">
                             <columns>
-                                <TableColumn fx:id="codeColumn" prefWidth="400.0" text="Subject Code" />
-                                <TableColumn fx:id="unitsColumn" prefWidth="180.0" text="Units" />
+                                <TableColumn fx:id="codeColumn" prefWidth="400.0" text="Subject Code"
+                                             style="-fx-font-family: 'Segoe UI Semibold'; -fx-background-color: #f0e8e8;" />
+                                <TableColumn fx:id="unitsColumn" prefWidth="180.0" text="Units"
+                                             style="-fx-font-family: 'Segoe UI Semibold'; -fx-background-color: #f0e8e8;" />
                             </columns>
                             <effect>
-                                <DropShadow color="#00000022" height="5.0" radius="2.0" width="5.0" />
+                                <DropShadow color="#00000015" height="3.0" radius="2.0" width="3.0" />
                             </effect>
                             <placeholder>
-                                <Label text="No recommended subjects available" />
+                                <Label text="No recommended subjects available"
+                                       style="-fx-text-fill: #666666; -fx-font-family: 'Segoe UI';" />
                             </placeholder>
                         </TableView>
 
                         <HBox alignment="CENTER_RIGHT" spacing="15.0">
                             <children>
-                                <Label text="Total Units:" textFill="#333333">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="totalUnitsLabel" text="0" textFill="#333333">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
+                                <Label text="Total Units:"
+                                       style="-fx-text-fill: #4a4a4a; -fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 14;" />
+                                <Label fx:id="totalUnitsLabel" text="0"
+                                       style="-fx-text-fill: #800000; -fx-font-family: 'Segoe UI Bold'; -fx-font-size: 16;" />
                             </children>
                         </HBox>
                     </children>
                 </VBox>
 
-                <!-- Buttons Section -->
+                <!-- Action Buttons -->
                 <HBox alignment="CENTER_RIGHT" spacing="15.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="40.0">
                     <children>
                         <Button fx:id="printButton" mnemonicParsing="false" onAction="#handlePrint"
-                                style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Print">
+                                style="-fx-background-color: #800000; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;"
+                                text="Print">
                             <font>
-                                <Font size="14.0" />
+                                <Font name="Segoe UI Semibold" size="14.0" />
                             </font>
                             <padding>
-                                <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
+                                <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                             </padding>
                             <effect>
-                                <DropShadow color="#00000033" height="5.0" radius="2.0" width="5.0" />
+                                <DropShadow color="#00000035" height="5.0" radius="3.0" width="5.0" />
                             </effect>
                         </Button>
                         <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleClose"
-                                style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Close">
+                                style="-fx-background-color: #a0a0a0; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;"
+                                text="Close">
                             <font>
-                                <Font size="14.0" />
+                                <Font name="Segoe UI Semibold" size="14.0" />
                             </font>
                             <padding>
-                                <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
+                                <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                             </padding>
                             <effect>
-                                <DropShadow color="#00000033" height="5.0" radius="2.0" width="5.0" />
+                                <DropShadow color="#00000025" height="4.0" radius="3.0" width="4.0" />
                             </effect>
                         </Button>
                     </children>
