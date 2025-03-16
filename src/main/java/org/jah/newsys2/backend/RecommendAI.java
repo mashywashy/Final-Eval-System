@@ -2,53 +2,46 @@ package org.jah.newsys2.backend;
 
 import okhttp3.*;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class RecommendAI {
     private static final OkHttpClient client = new OkHttpClient();
-    private static final String API_URL = "http://localhost:8080/ask";
+    private static final String API_URL = "https://jahnissi-api.yeems214.xyz/ask";
+    //private static final String API_URL = "http://localhost:8080/ask";
+    private static final MediaType JSON = MediaType.get("application/json");
+    private static final String HEADER_ACCEPT = "Accept";
+    private static final String HEADER_CONTENT_TYPE = "Content-Type";
 
     public String recommendAI(List<Subject> subjects, String program, String name) {
-        StringBuilder prompt = new StringBuilder("Present following recommended subjects for a student by categorizing which are majors which are " +
-                "minors and calculate the total units to(Student Name): " + name + ", Program: " + program);
+        String prompt = buildPrompt(subjects, program, name);
+        String response = sendPostRequest(prompt);
+        return parseResponse(response);
+    }
 
+    private String buildPrompt(List<Subject> subjects, String program, String name) {
+        StringJoiner subjectList = new StringJoiner(", ");
         for (Subject subject : subjects) {
-            prompt.append(subject.getCode()).append(" (").append(subject.getUnits()).append(" units), ");
-        }
-        String response = sendPostRequest(prompt.toString());
-
-        if (response != null) {
-            JSONObject jsonObject = new JSONObject(response);
-            String reply = jsonObject.optString("reply", "no reply found");
-            System.out.println(reply);
-            return reply;
-        } else {
-            System.out.println("Failed to fetch response.");
-            return null;
+            subjectList.add(subject.getCode() + " (" + subject.getUnits() + " units)");
         }
 
+        return String.format(
+                "Present the following recommended subjects for a student by categorizing which are majors and minors, " +
+                        "and calculate the total units. (Student Name: %s, Program: %s) Subjects: %s",
+                name, program, subjectList
+        );
     }
 
-    public static void main(String[] args) {
-
-    }
-
-    private static String sendPostRequest(String prompt) {
-        // Construct JSON request body
-        String json = String.format("{\"prompt\": \"%s\"}", prompt);
-        RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
-
-        // Create the request
+    private String sendPostRequest(String prompt) {
+        RequestBody body = RequestBody.create(String.format("{\"prompt\": \"%s\"}", prompt), JSON);
         Request request = new Request.Builder()
                 .url(API_URL)
                 .post(body)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
+                .addHeader(HEADER_ACCEPT, "application/json")
+                .addHeader(HEADER_CONTENT_TYPE, "application/json")
                 .build();
 
-        // Execute request and handle response
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 System.err.println("Request failed. Code: " + response.code());
@@ -59,5 +52,20 @@ public class RecommendAI {
             System.err.println("IOException occurred: " + e.getMessage());
             return null;
         }
+    }
+
+    private String parseResponse(String response) {
+        if (response == null) {
+            System.out.println("Failed to fetch response.");
+            return null;
+        }
+        JSONObject jsonObject = new JSONObject(response);
+        String reply = jsonObject.optString("reply", "No reply found.");
+        System.out.println(reply);
+        return reply;
+    }
+
+    public static void main(String[] args) {
+        // Example usage
     }
 }

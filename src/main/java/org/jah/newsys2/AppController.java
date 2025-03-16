@@ -1,5 +1,7 @@
 package org.jah.newsys2;
 
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.jah.newsys2.backend.RecommendAI;
 import org.jah.newsys2.backend.StudentEval;
@@ -29,6 +33,42 @@ public class AppController {
     @FXML private Button nextButton;
     @FXML private Button cancelButton;
 
+    @FXML private StackPane loadingPane;
+    @FXML private ImageView loadingGif;
+    private List<Subject> currentRecommendedSubjects;
+
+    // Add the recommendation service
+    private final Service<String> recommendationService = new Service<>() {
+        @Override
+        protected Task<String> createTask() {
+            // Capture values at time of task creation
+            final String name = nameField.getText();
+            final String program = programComboBox.getValue();
+            final List<Subject> subjects = currentRecommendedSubjects;
+
+            return new RecommendationTask(name, program, subjects);
+        }
+    };
+
+    // Add this inner class
+    private static class RecommendationTask extends Task<String> {
+        private final String name;
+        private final String program;
+        private final List<Subject> recommendedSubjects;
+
+        public RecommendationTask(String name, String program, List<Subject> recommendedSubjects) {
+            this.name = name;
+            this.program = program;
+            this.recommendedSubjects = recommendedSubjects;
+        }
+
+        @Override
+        protected String call() throws Exception {
+            RecommendAI recommender = new RecommendAI();
+            return recommender.recommendAI(recommendedSubjects, program, name);
+        }
+    }
+
     @FXML
     public void initialize() {
         // Initialize ComboBoxes
@@ -47,6 +87,60 @@ public class AppController {
         // Handle Next button click
         nextButton.setOnAction(event -> handleNextButton());
         cancelButton.setOnAction(event -> handleCancelButton());
+
+
+        // Initialize service handlers
+        recommendationService.setOnRunning(e -> {
+            loadingPane.setVisible(true);
+            loadingGif.setVisible(true);
+        });
+
+        recommendationService.setOnSucceeded(e -> {
+            loadingPane.setVisible(false);
+            String recommendation = recommendationService.getValue();
+            openRecommendationWindowAfterLoading(
+                    nameField.getText(),
+                    idNumberField.getText(),
+                    programComboBox.getValue(),
+                    recommendation
+            );
+        });
+
+        recommendationService.setOnFailed(e -> {
+            loadingPane.setVisible(false);
+            showAlert("Error", "Failed to generate recommendations: " + e.getSource().getException().getMessage());
+        });
+    }
+
+    private void displayRecommendedSubjects(String name, String id, List<Subject> recommendedSubjects) {
+        if (!isNumeric(id)) {
+            showAlert("Error", "ID Number must contain only digits.");
+            return;
+        }
+
+        currentRecommendedSubjects = recommendedSubjects;
+        recommendationService.restart();
+    }
+
+    // Separate method for opening the recommendation window after loading
+    private void openRecommendationWindowAfterLoading(String name, String id, String program, String recommendation) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("recommended_subjects.fxml"));
+            Parent root = loader.load();
+
+            RecommendedSubjectsController controller = loader.getController();
+            controller.setupRecommendedSubjects(name, Integer.parseInt(id), program, recommendation);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            // Close current window
+            ((Stage) nextButton.getScene().getWindow()).close();
+        } catch (IOException e) {
+            showAlert("Error", "Could not open recommendation window: " + e.getMessage());
+        }
     }
 
     private void updateSubjectsFieldState() {
@@ -172,32 +266,6 @@ public class AppController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Could not open subject selection screen: " + e.getMessage());
-        }
-    }
-
-    private void displayRecommendedSubjects(String name, String id, List<Subject> recommendedSubjects) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("recommended_subjects.fxml"));
-            Parent root = loader.load();
-
-            RecommendedSubjectsController controller = loader.getController();
-            RecommendAI rAi = new RecommendAI();
-            String recommendation = rAi.recommendAI(recommendedSubjects, programComboBox.getValue(), name);
-            controller.setupRecommendedSubjects(name, Integer.parseInt(id), programComboBox.getValue(), recommendation);
-
-            Stage stage = new Stage();
-            stage.setTitle("Recommended Subjects");
-            stage.setScene(new Scene(root, 600, 400));
-            stage.setMaximized(true);
-            stage.show();
-
-            // Close the current window
-            Stage currentStage = (Stage) nextButton.getScene().getWindow();
-            currentStage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Could not open recommended subjects screen: " + e.getMessage());
         }
     }
 

@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -16,7 +18,7 @@
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.jah.newsys2.SubjectSelectionController">
     <children>
-        <!-- Maroon Header -->
+        <!-- Header -->
         <StackPane prefHeight="80.0" style="-fx-background-color: #800000; -fx-background-radius: 0 0 15 15;"
                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -31,6 +33,9 @@
             </children>
         </StackPane>
 
+        <!-- Loading Overlay -->
+        <!-- In your FXML file -->
+
         <!-- Instructions -->
         <Label text="Please select the subjects you've recently taken and indicate whether you passed or failed each one."
                textFill="#4a4a4a" style="-fx-font-family: 'Segoe UI';"
@@ -40,7 +45,7 @@
             </font>
         </Label>
 
-        <!-- Subjects Scroll Container -->
+        <!-- Subjects Container -->
         <ScrollPane fitToWidth="true" prefHeight="300.0"
                     style="-fx-background: white; -fx-border-color: #e0d7d7; -fx-border-radius: 8; -fx-background-radius: 8;"
                     AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="120.0">
@@ -56,8 +61,25 @@
             </effect>
         </ScrollPane>
 
-        <!-- Button Container -->
-        <HBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+        <StackPane fx:id="loadingPane" visible="false"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                   style="-fx-background-color: rgba(255,255,255,0.8);">
+            <VBox alignment="CENTER" spacing="10">
+                <ImageView fx:id="loadingGif" fitWidth="100" fitHeight="100">
+                    <image>
+                        <Image url="@loading.gif" />
+                    </image>
+                </ImageView>
+                <Label text="Generating Recommendation..."
+                       style="-fx-text-fill: #800000; -fx-font-size: 16;"/>
+            </VBox>
+        </StackPane>
+
+        <!-- Action Buttons -->
+        <HBox alignment="CENTER" spacing="20.0"
+              style="-fx-padding: 0 0 15 0;"
+              AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
             <children>
                 <Button fx:id="backButton" mnemonicParsing="false"
                         style="-fx-background-color: #a0a0a0; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;"
@@ -88,7 +110,7 @@
             </children>
         </HBox>
 
-        <!-- Status indicator -->
+        <!-- Status Footer -->
         <Label text="* All fields are required" textFill="#800000" style="-fx-font-family: 'Segoe UI';"
                AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="50.0">
             <font>

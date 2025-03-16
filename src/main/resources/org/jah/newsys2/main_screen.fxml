@@ -12,6 +12,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jah.newsys2.AppController">
     <children>
         <!-- Maroon header -->
@@ -30,6 +32,7 @@
                 </Label>
             </children>
         </StackPane>
+        <!-- Loading Overlay -->
 
         <AnchorPane fx:id="rootPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="469.0" prefWidth="700.0" style="-fx-background-color: #f8f5f2;" VBox.vgrow="ALWAYS">
             <padding>
@@ -82,6 +85,7 @@
                                             </children>
                                         </VBox>
 
+
                                         <!-- Column 2 -->
                                         <VBox prefWidth="300.0" spacing="15.0">
                                             <children>
@@ -115,7 +119,20 @@
                                         </VBox>
                                     </children>
                                 </HBox>
-
+                                <StackPane fx:id="loadingPane" visible="false"
+                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                                           style="-fx-background-color: rgba(255,255,255,0.8);">
+                                    <VBox alignment="CENTER" spacing="10">
+                                        <ImageView fx:id="loadingGif" fitWidth="100" fitHeight="100">
+                                            <image>
+                                                <Image url="@loading.gif" />
+                                            </image>
+                                        </ImageView>
+                                        <Label text="Generating Recommendations..."
+                                               style="-fx-text-fill: #800000; -fx-font-size: 16;"/>
+                                    </VBox>
+                                </StackPane>
                                 <!-- Full-width row -->
                                 <HBox alignment="CENTER_LEFT" spacing="20.0">
                                     <children>

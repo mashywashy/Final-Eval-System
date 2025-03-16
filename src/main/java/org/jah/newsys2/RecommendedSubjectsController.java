@@ -2,6 +2,7 @@ package org.jah.newsys2;
 
 import javafx.fxml.FXML;
 import javafx.print.PrinterJob;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 
 public class RecommendedSubjectsController {
 
+    // UI Components
     @FXML private Label nameLabel;
     @FXML private TextArea recommendationTextArea;
     @FXML private Label idLabel;
@@ -23,10 +25,11 @@ public class RecommendedSubjectsController {
         recommendationTextArea.setWrapText(true);
 
         // Set button actions
-        printButton.setOnAction(event -> handlePrint());
-        closeButton.setOnAction(event -> handleClose());
+        printButton.setOnAction(e -> handlePrint());
+        closeButton.setOnAction(e -> handleClose());
     }
 
+    // Updated to match string-based recommendation
     public void setupRecommendedSubjects(String name, int id, String program, String recommendation) {
         nameLabel.setText(name);
         idLabel.setText(String.valueOf(id));
@@ -37,16 +40,21 @@ public class RecommendedSubjectsController {
     private void handlePrint() {
         PrinterJob job = PrinterJob.createPrinterJob();
         if (job != null && job.showPrintDialog(printButton.getScene().getWindow())) {
-            // Print the entire recommendation content
             boolean success = job.printPage(recommendationTextArea);
-            if (success) {
-                job.endJob();
-            }
+            if (success) job.endJob();
         }
     }
 
     private void handleClose() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
