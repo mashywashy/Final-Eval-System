@@ -8,13 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import org.jah.newsys2.backend.StudentEval;
+import org.jah.newsys2.backend.Subject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,9 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.jah.newsys2.backend.StudentEval;
-import org.jah.newsys2.backend.Subject;
 
 public class SubjectSelectionController {
 

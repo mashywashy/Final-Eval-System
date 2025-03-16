@@ -8,6 +8,10 @@ module org.jah.newsys2 {
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.net.http;
+    requires okhttp3;
+    requires org.json;
+
 
     opens org.jah.newsys2 to javafx.fxml;
     exports org.jah.newsys2;

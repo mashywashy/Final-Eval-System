@@ -1,106 +1,135 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <curriculum>
     <firstYear>
-        <firstSem>
-            <subject subjectCode="bio101" units="3"/>
-            <subject subjectCode="chem101" units="3"/>
-            <subject subjectCode="eng100" units="3"/>
-            <subject subjectCode="math100" units="3"/>
-            <subject subjectCode="psych101" units="3"/>
-            <subject subjectCode="socio100" units="3"/>
-            <subject subjectCode="medtech-orient101" units="3"/>
-            <subject subjectCode="pe101" units="2"/>
-            <subject subjectCode="nstp101" units="3"/>
+        <firstSem totalUnits="26">
+            <subject subjectCode="bio101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="chem101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="eng100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="math100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="psych101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="socio100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="medtech-orient101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe101" units="2" isElective="false" isMajor="false" />
+            <subject subjectCode="nstp101" units="3" isElective="false" isMajor="false" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="bio102" units="3">
-                <prerequisite>bio101</prerequisite>
+        <secondSem totalUnits="23">
+            <subject subjectCode="bio102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>bio101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="chem102" units="3">
-                <prerequisite>chem101</prerequisite>
+            <subject subjectCode="chem102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>chem101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="eng101" units="3">
-                <prerequisite>eng100</prerequisite>
+            <subject subjectCode="eng101" units="3" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>eng100</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="anatomy101" units="3"/>
-            <subject subjectCode="physiology101" units="3"/>
-            <subject subjectCode="histology101" units="3"/>
-            <subject subjectCode="pe102" units="2">
-                <prerequisite>pe101</prerequisite>
+            <subject subjectCode="anatomy101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="physiology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="histology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe102" units="2" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>pe101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="nstp102" units="3">
-                <prerequisite>nstp101</prerequisite>
+            <subject subjectCode="nstp102" units="3" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>nstp101</prerequisite>
+                </prerequisites>
             </subject>
         </secondSem>
     </firstYear>
     <secondYear>
-        <firstSem>
-            <subject subjectCode="microbio101" units="3"/>
-            <subject subjectCode="parasitology101" units="3"/>
-            <subject subjectCode="biochem101" units="3">
-                <prerequisite>chem102</prerequisite>
+        <firstSem totalUnits="17">
+            <subject subjectCode="microbio101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="parasitology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="biochem101" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>chem102</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="phlebotomy101" units="3"/>
-            <subject subjectCode="pathology101" units="3"/>
-            <subject subjectCode="pe103" units="2">
-                <prerequisite>pe102</prerequisite>
+            <subject subjectCode="phlebotomy101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pathology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe103" units="2" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>pe102</prerequisite>
+                </prerequisites>
             </subject>
         </firstSem>
-        <secondSem>
-            <subject subjectCode="hematology101" units="3"/>
-            <subject subjectCode="clinical-chem101" units="3">
-                <prerequisite>biochem101</prerequisite>
+        <secondSem totalUnits="17">
+            <subject subjectCode="hematology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="clinical-chem101" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>biochem101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="immunology101" units="3"/>
-            <subject subjectCode="parasitology102" units="3">
-                <prerequisite>parasitology101</prerequisite>
+            <subject subjectCode="immunology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="parasitology102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>parasitology101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="toxicology101" units="3"/>
-            <subject subjectCode="pe104" units="2">
-                <prerequisite>pe103</prerequisite>
+            <subject subjectCode="toxicology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe104" units="2" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>pe103</prerequisite>
+                </prerequisites>
             </subject>
         </secondSem>
     </secondYear>
     <thirdYear>
-        <firstSem>
-            <subject subjectCode="hematology102" units="3">
-                <prerequisite>hematology101</prerequisite>
+        <firstSem totalUnits="21">
+            <subject subjectCode="hematology102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>hematology101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="clinical-microbio101" units="3">
-                <prerequisite>microbio101</prerequisite>
+            <subject subjectCode="clinical-microbio101" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>microbio101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="clinical-parasitology101" units="3">
-                <prerequisite>parasitology102</prerequisite>
+            <subject subjectCode="clinical-parasitology101" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>parasitology102</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="serology101" units="3"/>
-            <subject subjectCode="mycology101" units="3"/>
-            <subject subjectCode="molecular-bio101" units="3"/>
-            <subject subjectCode="elective" units="3"/>
+            <subject subjectCode="serology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="mycology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="molecular-bio101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="elective1" units="3" isElective="true" isMajor="true" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="clinical-chem102" units="3">
-                <prerequisite>clinical-chem101</prerequisite>
+        <secondSem totalUnits="18">
+            <subject subjectCode="clinical-chem102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>clinical-chem101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="immunohematology101" units="3"/>
-            <subject subjectCode="virology101" units="3"/>
-            <subject subjectCode="cytogenetics101" units="3"/>
-            <subject subjectCode="research101" units="3"/>
-            <subject subjectCode="elective" units="3"/>
+            <subject subjectCode="immunohematology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="virology101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="cytogenetics101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="research101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="elective2" units="3" isElective="true" isMajor="true" />
         </secondSem>
     </thirdYear>
     <fourthYear>
-        <firstSem>
-            <subject subjectCode="research102" units="3">
-                <prerequisite>research101</prerequisite>
+        <firstSem totalUnits="18">
+            <subject subjectCode="research102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>research101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="lab-management101" units="3"/>
-            <subject subjectCode="medtech-laws101" units="3"/>
-            <subject subjectCode="ethics101" units="3"/>
-            <subject subjectCode="capstone101" units="3"/>
-            <subject subjectCode="elective" units="3"/>
+            <subject subjectCode="lab-management101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="medtech-laws101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="ethics101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="capstone101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="elective3" units="3" isElective="true" isMajor="true" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="clinical-practicum" units="12"/>
+        <secondSem totalUnits="12">
+            <subject subjectCode="clinical-practicum" units="12" isElective="false" isMajor="true" />
         </secondSem>
     </fourthYear>
 </curriculum>

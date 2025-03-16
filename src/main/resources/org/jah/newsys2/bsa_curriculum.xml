@@ -1,143 +1,202 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <curriculum>
     <firstYear>
-        <firstSem>
-            <subject subjectCode="acctg101" units="3"/>
-            <subject subjectCode="eng100" units="3"/>
-            <subject subjectCode="math100" units="3"/>
-            <subject subjectCode="socio100" units="3"/>
-            <subject subjectCode="psych101" units="3"/>
-            <subject subjectCode="buscomm101" units="3"/>
-            <subject subjectCode="busmath101" units="3"/>
-            <subject subjectCode="pe101" units="2"/>
-            <subject subjectCode="nstp101" units="3"/>
+        <firstSem totalUnits="26">
+            <subject subjectCode="acctg101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="eng100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="math100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="socio100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="psych101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="buscomm101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="busmath101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe101" units="2" isElective="false" isMajor="false" />
+            <subject subjectCode="nstp101" units="3" isElective="false" isMajor="false" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="acctg102" units="3">
-                <prerequisite>acctg101</prerequisite>
+        <secondSem totalUnits="26">
+            <subject subjectCode="acctg102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="eng101" units="3">
-                <prerequisite>eng100</prerequisite>
+            <subject subjectCode="eng101" units="3" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>eng100</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="math101" units="3">
-                <prerequisite>math100</prerequisite>
+            <subject subjectCode="math101" units="3" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>math100</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="hist101" units="3"/>
-            <subject subjectCode="hum101" units="3"/>
-            <subject subjectCode="buslaw101" units="3"/>
-            <subject subjectCode="busstat101" units="3"/>
-            <subject subjectCode="pe102" units="2">
-                <prerequisite>pe101</prerequisite>
+            <subject subjectCode="hist101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="hum101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="buslaw101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="busstat101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe102" units="2" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>pe101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="nstp102" units="3">
-                <prerequisite>nstp101</prerequisite>
+            <subject subjectCode="nstp102" units="3" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>nstp101</prerequisite>
+                </prerequisites>
             </subject>
         </secondSem>
     </firstYear>
     <secondYear>
-        <firstSem>
-            <subject subjectCode="acctg201" units="3">
-                <prerequisite>acctg102</prerequisite>
+        <firstSem totalUnits="20">
+            <subject subjectCode="acctg201" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg102</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-fin201" units="3">
-                <prerequisite>acctg102</prerequisite>
+            <subject subjectCode="acctg-fin201" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg102</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="econ101" units="3"/>
-            <subject subjectCode="rizal101" units="3"/>
-            <subject subjectCode="tax101" units="3"/>
-            <subject subjectCode="buslaw201" units="3">
-                <prerequisite>buslaw101</prerequisite>
+            <subject subjectCode="econ101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="rizal101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="tax101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="buslaw201" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>buslaw101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="pe103" units="2">
-                <prerequisite>pe102</prerequisite>
+            <subject subjectCode="pe103" units="2" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>pe102</prerequisite>
+                </prerequisites>
             </subject>
         </firstSem>
-        <secondSem>
-            <subject subjectCode="acctg202" units="3">
-                <prerequisite>acctg201</prerequisite>
+        <secondSem totalUnits="20">
+            <subject subjectCode="acctg202" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg201</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-fin202" units="3">
-                <prerequisite>acctg-fin201</prerequisite>
+            <subject subjectCode="acctg-fin202" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-fin201</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="econ102" units="3">
-                <prerequisite>econ101</prerequisite>
+            <subject subjectCode="econ102" units="3" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>econ101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="sts101" units="3"/>
-            <subject subjectCode="philo101" units="3"/>
-            <subject subjectCode="tax102" units="3">
-                <prerequisite>tax101</prerequisite>
+            <subject subjectCode="sts101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="philo101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="tax102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>tax101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="pe104" units="2">
-                <prerequisite>pe103</prerequisite>
+            <subject subjectCode="pe104" units="2" isElective="false" isMajor="false">
+                <prerequisites>
+                    <prerequisite>pe103</prerequisite>
+                </prerequisites>
             </subject>
         </secondSem>
     </secondYear>
     <thirdYear>
-        <firstSem>
-            <subject subjectCode="acctg301" units="3">
-                <prerequisite>acctg202</prerequisite>
+        <firstSem totalUnits="21">
+            <subject subjectCode="acctg301" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg202</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-cost301" units="3">
-                <prerequisite>acctg-fin202</prerequisite>
+            <subject subjectCode="acctg-cost301" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-fin202</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-tax301" units="3">
-                <prerequisite>tax102</prerequisite>
+            <subject subjectCode="acctg-tax301" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>tax102</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="audit101" units="3">
-                <prerequisite>acctg-fin202</prerequisite>
+            <subject subjectCode="audit101" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-fin202</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="research101" units="3"/>
-            <subject subjectCode="busfinance101" units="3"/>
-            <subject subjectCode="elective" units="3"/>
+            <subject subjectCode="research101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="busfinance101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="elective1" units="3" isElective="true" isMajor="true" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="acctg302" units="3">
-                <prerequisite>acctg301</prerequisite>
+        <secondSem totalUnits="21">
+            <subject subjectCode="acctg302" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg301</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-cost302" units="3">
-                <prerequisite>acctg-cost301</prerequisite>
+            <subject subjectCode="acctg-cost302" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-cost301</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-tax302" units="3">
-                <prerequisite>acctg-tax301</prerequisite>
+            <subject subjectCode="acctg-tax302" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-tax301</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="audit102" units="3">
-                <prerequisite>audit101</prerequisite>
+            <subject subjectCode="audit102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>audit101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="research102" units="3">
-                <prerequisite>research101</prerequisite>
+            <subject subjectCode="research102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>research101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="busfinance102" units="3">
-                <prerequisite>busfinance101</prerequisite>
+            <subject subjectCode="busfinance102" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>busfinance101</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="elective" units="3"/>
+            <subject subjectCode="elective2" units="3" isElective="true" isMajor="true" />
         </secondSem>
     </thirdYear>
     <fourthYear>
-        <firstSem>
-            <subject subjectCode="acctg401" units="3">
-                <prerequisite>acctg302</prerequisite>
+        <firstSem totalUnits="18">
+            <subject subjectCode="acctg401" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg302</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-mngt401" units="3">
-                <prerequisite>acctg-cost302</prerequisite>
+            <subject subjectCode="acctg-mngt401" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-cost302</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="audit401" units="3">
-                <prerequisite>audit102</prerequisite>
+            <subject subjectCode="audit401" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>audit102</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="lit11" units="3"/>
-            <subject subjectCode="capstone101" units="3"/>
-            <subject subjectCode="elective" units="3"/>
+            <subject subjectCode="lit11" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="capstone101" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="elective3" units="3" isElective="true" isMajor="true" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="acctg402" units="3">
-                <prerequisite>acctg401</prerequisite>
+        <secondSem totalUnits="12">
+            <subject subjectCode="acctg402" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg401</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="acctg-mngt402" units="3">
-                <prerequisite>acctg-mngt401</prerequisite>
+            <subject subjectCode="acctg-mngt402" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>acctg-mngt401</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="audit402" units="3">
-                <prerequisite>audit401</prerequisite>
+            <subject subjectCode="audit402" units="3" isElective="false" isMajor="true">
+                <prerequisites>
+                    <prerequisite>audit401</prerequisite>
+                </prerequisites>
             </subject>
-            <subject subjectCode="cc-pract40" units="9"/>
+            <subject subjectCode="cc-pract40" units="9" isElective="false" isMajor="true" />
         </secondSem>
     </fourthYear>
 </curriculum>

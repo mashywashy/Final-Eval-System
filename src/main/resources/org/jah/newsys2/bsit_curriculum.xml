@@ -1,46 +1,46 @@
 <curriculum>
     <firstYear>
-        <firstSem>
-            <subject subjectCode="eng100" units="3" isElective="false" />
-            <subject subjectCode="socio102" units="3" isElective="false" />
-            <subject subjectCode="math100" units="3" isElective="false" />
-            <subject subjectCode="psych101" units="3" isElective="false" />
-            <subject subjectCode="cc-intcom11" units="3" isElective="false" />
-            <subject subjectCode="cc-comprog11" units="3" isElective="false" />
-            <subject subjectCode="it-webdev11" units="3" isElective="false" />
-            <subject subjectCode="pe101" units="2" isElective="false" />
-            <subject subjectCode="nstp101" units="3" isElective="false" />
+        <firstSem totalUnits="26">
+            <subject subjectCode="eng100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="socio102" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="math100" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="psych101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="cc-intcom11" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="cc-comprog11" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="it-webdev11" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="pe101" units="2" isElective="false" isMajor="false" />
+            <subject subjectCode="nstp101" units="3" isElective="false" isMajor="false" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="eng101" units="3" isElective="false">
+        <secondSem totalUnits="26">
+            <subject subjectCode="eng101" units="3" isElective="false" isMajor="false">
                 <prerequisites>
                     <prerequisite>eng100</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="entrep101" units="3" isElective="false" />
-            <subject subjectCode="math101" units="3" isElective="false">
+            <subject subjectCode="entrep101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="math101" units="3" isElective="false" isMajor="false">
                 <prerequisites>
                     <prerequisite>math100</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="hist101" units="3" isElective="false" />
-            <subject subjectCode="hum101" units="3" isElective="false" />
-            <subject subjectCode="cc-comprog12" units="3" isElective="false">
+            <subject subjectCode="hist101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="hum101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="cc-comprog12" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-comprog11</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-discret12" units="3" isElective="false">
+            <subject subjectCode="cc-discret12" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-intcom11</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="pe102" units="2" isElective="false">
+            <subject subjectCode="pe102" units="2" isElective="false" isMajor="false">
                 <prerequisites>
                     <prerequisite>pe101</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="nstp102" units="3" isElective="false">
+            <subject subjectCode="nstp102" units="3" isElective="false" isMajor="false">
                 <prerequisites>
                     <prerequisite>nstp101</prerequisite>
                 </prerequisites>
@@ -48,71 +48,71 @@
         </secondSem>
     </firstYear>
     <secondYear>
-        <firstSem>
-            <subject subjectCode="socio101" units="3" isElective="false" />
-            <subject subjectCode="rizal101" units="3" isElective="false" />
-            <subject subjectCode="cc-digilog21" units="3" isElective="false">
+        <firstSem totalUnits="23">
+            <subject subjectCode="socio101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="rizal101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="cc-digilog21" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-discret12</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-ooprog21" units="3" isElective="false">
+            <subject subjectCode="cc-ooprog21" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-comprog12</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-sad21" units="3" isElective="false">
+            <subject subjectCode="it-sad21" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-comprog12</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-acctg21" units="3" isElective="false">
+            <subject subjectCode="cc-acctg21" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>math101</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-twrite21" units="3" isElective="false">
+            <subject subjectCode="cc-twrite21" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>eng101</prerequisite>
                     <prerequisite>cc-intcom11</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="pe103" units="2" isElective="false">
+            <subject subjectCode="pe103" units="2" isElective="false" isMajor="false">
                 <prerequisites>
                     <prerequisite>pe102</prerequisite>
                 </prerequisites>
             </subject>
         </firstSem>
-        <secondSem>
-            <subject subjectCode="sts101" units="3" isElective="false" />
-            <subject subjectCode="philo101" units="3" isElective="false" />
-            <subject subjectCode="cc-quameth22" units="3" isElective="false">
+        <secondSem totalUnits="23">
+            <subject subjectCode="sts101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="philo101" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="cc-quameth22" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-discret12</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-platech22" units="3" isElective="false">
+            <subject subjectCode="it-platech22" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-digilog21</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-appsdev22" units="3" isElective="false">
+            <subject subjectCode="cc-appsdev22" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-ooprog21</prerequisite>
                     <prerequisite>it-sad21</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-datastruc22" units="3" isElective="false">
+            <subject subjectCode="cc-datastruc22" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-ooprog21</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-datacom22" units="3" isElective="false">
+            <subject subjectCode="cc-datacom22" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-digilog21</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="pe104" units="2" isElective="false">
+            <subject subjectCode="pe104" units="2" isElective="false" isMajor="false">
                 <prerequisites>
                     <prerequisite>pe103</prerequisite>
                 </prerequisites>
@@ -120,84 +120,84 @@
         </secondSem>
     </secondYear>
     <thirdYear>
-        <firstSem>
-            <subject subjectCode="it-imdbsys31" units="3" isElective="false">
+        <firstSem totalUnits="21">
+            <subject subjectCode="it-imdbsys31" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-appsdev22</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-network31" units="3" isElective="false">
+            <subject subjectCode="it-network31" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-datacom22</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-testqua31" units="3" isElective="false">
+            <subject subjectCode="it-testqua31" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-appsdev22</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-hci31" units="3" isElective="false">
+            <subject subjectCode="cc-hci31" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-appsdev22</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-rescom31" units="3" isElective="false">
+            <subject subjectCode="cc-rescom31" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-twrite21</prerequisite>
                     <prerequisite>cc-quameth22</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-el1" units="3" isElective="true" />
-            <subject subjectCode="it-fre1" units="3" isElective="true" />
-            <subject subjectCode="it-fre2" units="3" isElective="true" />
+            <subject subjectCode="it-el1" units="3" isElective="true" isMajor="true" />
+            <subject subjectCode="it-fre1" units="3" isElective="true" isMajor="true" />
+            <subject subjectCode="it-fre2" units="3" isElective="true" isMajor="true" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="it-imdbsys32" units="3" isElective="false">
+        <secondSem totalUnits="21">
+            <subject subjectCode="it-imdbsys32" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>it-imdbsys31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-infosec32" units="3" isElective="false">
+            <subject subjectCode="it-infosec32" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>it-imdbsys31</prerequisite>
                     <prerequisite>it-network31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-sysarch32" units="3" isElective="false">
+            <subject subjectCode="it-sysarch32" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>it-testqua31</prerequisite>
                     <prerequisite>cc-hci31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="cc-techno32" units="3" isElective="false">
+            <subject subjectCode="cc-techno32" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>cc-rescom31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-intprog32" units="3" isElective="false">
+            <subject subjectCode="it-intprog32" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>it-imdbsys31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-sysadmin32" units="3" isElective="false">
+            <subject subjectCode="it-sysadmin32" units="3" isElective="false" isMajor="true">
                 <prerequisites>
                     <prerequisite>it-network31</prerequisite>
                 </prerequisites>
             </subject>
-            <subject subjectCode="it-el2" units="3" isElective="true" />
-            <subject subjectCode="it-fre3" units="3" isElective="true" />
+            <subject subjectCode="it-el2" units="3" isElective="true" isMajor="true" />
+            <subject subjectCode="it-fre3" units="3" isElective="true" isMajor="true" />
         </secondSem>
     </thirdYear>
     <fourthYear>
-        <firstSem>
-            <subject subjectCode="lit11" units="3" isElective="false" />
-            <subject subjectCode="it-cpstone40" units="3" isElective="false" />
-            <subject subjectCode="it-el3" units="3" isElective="true" />
-            <subject subjectCode="it-fre4" units="3" isElective="true" />
+        <firstSem totalUnits="9">
+            <subject subjectCode="lit11" units="3" isElective="false" isMajor="false" />
+            <subject subjectCode="it-cpstone40" units="3" isElective="false" isMajor="true" />
+            <subject subjectCode="it-el3" units="3" isElective="true" isMajor="true" />
+            <subject subjectCode="it-fre4" units="3" isElective="true" isMajor="true" />
         </firstSem>
-        <secondSem>
-            <subject subjectCode="cc-pract40" units="9" isElective="false" />
-            <subject subjectCode="it-el4" units="3" isElective="true" />
+        <secondSem totalUnits="12">
+            <subject subjectCode="cc-pract40" units="9" isElective="false" isMajor="true" />
+            <subject subjectCode="it-el4" units="3" isElective="true" isMajor="true" />
         </secondSem>
     </fourthYear>
 </curriculum>
