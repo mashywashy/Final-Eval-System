@@ -63,7 +63,7 @@ public class AppController {
         }
 
         @Override
-        protected String call() throws Exception {
+        protected String call() {
             RecommendAI recommender = new RecommendAI();
             return recommender.recommendAI(recommendedSubjects, program, name);
         }
@@ -78,24 +78,24 @@ public class AppController {
         semesterComboBox.getItems().addAll("1", "2");
 
         // Add listener to newStudentComboBox to enable/disable subjectsField
-        newStudentComboBox.setOnAction(event -> updateSubjectsFieldState());
+        newStudentComboBox.setOnAction(_ -> updateSubjectsFieldState());
 
         // Add listeners to year and semester ComboBoxes
-        yearLevelComboBox.setOnAction(event -> updateSubjectsFieldState());
-        semesterComboBox.setOnAction(event -> updateSubjectsFieldState());
+        yearLevelComboBox.setOnAction(_ -> updateSubjectsFieldState());
+        semesterComboBox.setOnAction(_ -> updateSubjectsFieldState());
 
         // Handle Next button click
-        nextButton.setOnAction(event -> handleNextButton());
-        cancelButton.setOnAction(event -> handleCancelButton());
+        nextButton.setOnAction(_ -> handleNextButton());
+        cancelButton.setOnAction(_ -> handleCancelButton());
 
 
         // Initialize service handlers
-        recommendationService.setOnRunning(e -> {
+        recommendationService.setOnRunning(_ -> {
             loadingPane.setVisible(true);
             loadingGif.setVisible(true);
         });
 
-        recommendationService.setOnSucceeded(e -> {
+        recommendationService.setOnSucceeded(_ -> {
             loadingPane.setVisible(false);
             String recommendation = recommendationService.getValue();
             openRecommendationWindowAfterLoading(
@@ -112,7 +112,7 @@ public class AppController {
         });
     }
 
-    private void displayRecommendedSubjects(String name, String id, List<Subject> recommendedSubjects) {
+    private void displayRecommendedSubjects(String id, List<Subject> recommendedSubjects) {
         if (!isNumeric(id)) {
             showAlert("Error", "ID Number must contain only digits.");
             return;
@@ -145,17 +145,11 @@ public class AppController {
 
     private void updateSubjectsFieldState() {
         boolean isNewStudent = "Yes".equals(newStudentComboBox.getValue());
-        boolean isFirstYearFirstSem = "1".equals(yearLevelComboBox.getValue()) &&
-                "1".equals(semesterComboBox.getValue());
 
         // Disable subjects field if new student OR first year first semester
-        boolean shouldDisable = isNewStudent || isFirstYearFirstSem;
-        subjectsField.setDisable(shouldDisable);
+        subjectsField.setDisable(isNewStudent);
 
         // If disabled and not already cleared by newStudentComboBox, clear it
-        if (shouldDisable && !isNewStudent) {
-            subjectsField.clear();
-        }
 
         // Only disable year and semester combo boxes for new students
         yearLevelComboBox.setDisable(isNewStudent);
@@ -180,6 +174,10 @@ public class AppController {
             showAlert("Error", "Please complete all required fields.");
             return;
         }
+        if (!isAlphanumeric(name)) {
+            showAlert("Error", "Name must not contain numbers.");
+            return;
+        }
 
         // Validate that ID is numeric
         if (!isNumeric(id)) {
@@ -195,7 +193,6 @@ public class AppController {
                 return;
             }
 
-
             int subjectCount = Integer.parseInt(subjectsField.getText());
             int yearLevelInt = Integer.parseInt(yearLevel);
 
@@ -210,14 +207,14 @@ public class AppController {
             }
         }
 
-        // Treat first year first semester students like new students
-        if ("Yes".equals(isNewStudent) || isFirstYearFirstSem) {
-            // For new students or first year first sem, directly show recommendations
+        // For new students, show recommendations directly
+        if ("Yes".equals(isNewStudent)) {
             StudentEval se = new StudentEval(program);
             List<Subject> recommendedSubjects = se.getRecommendedSubjects();
-            displayRecommendedSubjects(name, id, recommendedSubjects);
-        } else {
-            // For continuing students, check the subjects count field
+            displayRecommendedSubjects(id, recommendedSubjects);
+        }
+        // For continuing students, check the subjects count field
+        else {
             if (subjectsField.getText().isEmpty() || !isNumeric(subjectsField.getText())) {
                 showAlert("Error", "Please enter a valid number of subjects taken.");
                 return;
@@ -267,6 +264,11 @@ public class AppController {
             e.printStackTrace();
             showAlert("Error", "Could not open subject selection screen: " + e.getMessage());
         }
+    }
+
+    private boolean isAlphanumeric(String str) {
+        // Matches only letters and spaces, no numbers
+        return str.matches("[a-zA-Z ]+");
     }
 
     private void showAlert(String title, String message) {
