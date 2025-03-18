@@ -181,7 +181,7 @@ public class AppController {
 
         // Validate that ID is numeric
         if (!isNumeric(id)) {
-            showAlert("Error", "ID Number must contain only digits.");
+            showAlert("Error", "ID Number must contain only 8 digits.");
             return;
         }
 
