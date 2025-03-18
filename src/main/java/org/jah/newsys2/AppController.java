@@ -175,7 +175,7 @@ public class AppController {
             return;
         }
         if (!isAlphanumeric(name)) {
-            showAlert("Error", "Name must not contain numbers.");
+            showAlert("Error", "Name must not contain illegal characters.");
             return;
         }
 

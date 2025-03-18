@@ -111,6 +111,7 @@ public class SubjectSelectionController {
         StudentEval eval = new StudentEval(program);
         List<String> subjectCodes = eval.getAllSubjects().stream()
                 .map(Subject::getCode)
+                .sorted()
                 .toList();
 
         for (int i = 0; i < count; i++) {
